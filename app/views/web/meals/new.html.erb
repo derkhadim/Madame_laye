@@ -1,0 +1,55 @@
+<div class="max-w-lg mx-auto bg-white rounded-xl shadow-md p-8">
+  <h1 class="text-2xl font-bold mb-6"><i class="fas fa-plus-circle text-orange-600"></i> Nouveau plat</h1>
+
+  <% if @errors %>
+    <div class="bg-red-100 text-red-700 p-3 rounded-lg mb-4">
+      <% @errors.each do |err| %><p class="text-sm"><i class="fas fa-exclamation-circle"></i> <%= err %></p><% end %>
+    </div>
+  <% end %>
+
+  <form method="post" action="/meals" class="space-y-4">
+    <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+    <div>
+      <label class="block text-sm font-medium text-gray-700 mb-1">Nom du plat</label>
+      <input type="text" name="name" required class="w-full border rounded-lg px-3 py-2">
+    </div>
+    <div>
+      <label class="block text-sm font-medium text-gray-700 mb-1">Description</label>
+      <textarea name="description" rows="2" class="w-full border rounded-lg px-3 py-2"></textarea>
+    </div>
+    <div class="grid grid-cols-2 gap-4">
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Jour</label>
+        <select name="day_of_week" required class="w-full border rounded-lg px-3 py-2">
+          <% %w[monday tuesday wednesday thursday friday saturday sunday].each do |day| %>
+            <option value="<%= day %>"><%= day.capitalize %></option>
+          <% end %>
+        </select>
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Type</label>
+        <select name="meal_type" required class="w-full border rounded-lg px-3 py-2">
+          <option value="lunch">Déjeuner</option>
+          <option value="dinner">Dîner</option>
+        </select>
+      </div>
+    </div>
+    <div class="grid grid-cols-2 gap-4">
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Prix (CFA)</label>
+        <input type="number" name="price" step="100" min="100" required class="w-full border rounded-lg px-3 py-2">
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Nombre de parts</label>
+        <input type="number" name="portion_count" min="1" value="5" class="w-full border rounded-lg px-3 py-2">
+      </div>
+    </div>
+    <div class="flex items-center gap-2">
+      <input type="checkbox" name="available" value="1" checked id="available" class="rounded">
+      <label for="available" class="text-sm">Disponible</label>
+    </div>
+    <button type="submit" class="w-full bg-orange-600 text-white py-2 rounded-lg hover:bg-orange-700 font-medium">
+      <i class="fas fa-save"></i> Enregistrer
+    </button>
+  </form>
+</div>

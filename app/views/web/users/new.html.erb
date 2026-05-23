@@ -1,0 +1,77 @@
+<div class="max-w-lg mx-auto mt-10 bg-white rounded-xl shadow-md p-8">
+  <h1 class="text-2xl font-bold text-center mb-6"><i class="fas fa-user-plus text-orange-600"></i> Inscription</h1>
+
+  <% if @errors %>
+    <div class="bg-red-100 text-red-700 p-3 rounded-lg mb-4">
+      <% @errors.each do |err| %>
+        <p class="text-sm"><i class="fas fa-exclamation-circle"></i> <%= err %></p>
+      <% end %>
+    </div>
+  <% end %>
+
+  <form method="post" action="/signup" class="space-y-4">
+    <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+
+    <div class="grid grid-cols-2 gap-4">
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Prénom</label>
+        <input type="text" name="first_name" required
+               class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-orange-500 focus:border-transparent">
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Nom</label>
+        <input type="text" name="last_name" required
+               class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-orange-500 focus:border-transparent">
+      </div>
+    </div>
+
+    <div>
+      <label class="block text-sm font-medium text-gray-700 mb-1">Numéro de téléphone</label>
+      <input type="tel" name="phone_number" required placeholder="221771234567"
+             class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-orange-500 focus:border-transparent">
+    </div>
+
+    <div>
+      <label class="block text-sm font-medium text-gray-700 mb-1">Mot de passe (min 6 car.)</label>
+      <input type="password" name="password" required minlength="6"
+             class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-orange-500 focus:border-transparent">
+    </div>
+
+    <div>
+      <label class="block text-sm font-medium text-gray-700 mb-1">Adresse</label>
+      <textarea name="address" rows="2" required
+                class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-orange-500 focus:border-transparent"></textarea>
+    </div>
+
+    <div class="grid grid-cols-2 gap-4">
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Latitude</label>
+        <input type="number" step="any" name="latitude" id="latitude"
+               class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-orange-500">
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Longitude</label>
+        <input type="number" step="any" name="longitude" id="longitude"
+               class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-orange-500">
+      </div>
+    </div>
+
+    <div>
+      <label class="block text-sm font-medium text-gray-700 mb-1">Je suis</label>
+      <select name="role" required
+              class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-orange-500">
+        <option value="client">Client — Je veux commander</option>
+        <option value="cook">Cuisinier — Je veux vendre mes plats</option>
+        <option value="delivery_driver">Livreur — Je veux livrer</option>
+      </select>
+    </div>
+
+    <button type="submit" class="w-full bg-orange-600 text-white py-2 rounded-lg hover:bg-orange-700 font-medium">
+      <i class="fas fa-user-plus"></i> Créer mon compte
+    </button>
+  </form>
+
+  <p class="text-center mt-4 text-sm text-gray-600">
+    Déjà inscrit ? <a href="/login" class="text-orange-600 hover:underline">Se connecter</a>
+  </p>
+</div>

@@ -1,0 +1,74 @@
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+  <div class="bg-white rounded-xl shadow p-6">
+    <div class="flex items-center gap-3">
+      <div class="bg-orange-100 p-3 rounded-full"><i class="fas fa-spinner text-orange-600 text-xl"></i></div>
+      <div>
+        <p class="text-2xl font-bold"><%= @active_orders.count %></p>
+        <p class="text-sm text-gray-500">Commandes actives</p>
+      </div>
+    </div>
+  </div>
+  <div class="bg-white rounded-xl shadow p-6">
+    <div class="flex items-center gap-3">
+      <div class="bg-green-100 p-3 rounded-full"><i class="fas fa-check-circle text-green-600 text-xl"></i></div>
+      <div>
+        <p class="text-2xl font-bold"><%= @order_history.count %></p>
+        <p class="text-sm text-gray-500">Commandes livrées</p>
+      </div>
+    </div>
+  </div>
+  <div class="bg-white rounded-xl shadow p-6">
+    <div class="flex items-center gap-3">
+      <div class="bg-blue-100 p-3 rounded-full"><i class="fas fa-search text-blue-600 text-xl"></i></div>
+      <div>
+        <a href="/menus/search" class="text-lg font-bold hover:underline text-blue-600">Rechercher</a>
+        <p class="text-sm text-gray-500">Trouver un repas</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="grid md:grid-cols-2 gap-6">
+  <div class="bg-white rounded-xl shadow p-6">
+    <h2 class="font-bold text-lg mb-4"><i class="fas fa-hourglass-half text-orange-600"></i> Commandes en cours</h2>
+    <% if @active_orders.any? %>
+      <div class="space-y-3">
+        <% @active_orders.each do |order| %>
+          <div class="border rounded-lg p-3">
+            <div class="flex justify-between items-start">
+              <div>
+                <p class="font-medium"><%= order.cook.full_name %></p>
+                <p class="text-sm text-gray-500"><%= order.order_items.count %> article(s) · <%= number_to_currency(order.total_amount, unit: "CFA", format: "%n %u") %></p>
+              </div>
+              <span class="text-xs px-2 py-0.5 rounded-full
+                <%= 'bg-yellow-100 text-yellow-800' if order.pending? %>
+                <%= 'bg-blue-100 text-blue-800' if order.accepted? %>
+                <%= 'bg-purple-100 text-purple-800' if order.in_delivery? %>
+                <%= 'bg-green-100 text-green-800' if order.delivered? %>
+              "><%= order.status %></span>
+            </div>
+            <a href="/orders/<%= order.id %>" class="text-sm text-orange-600 hover:underline mt-2 inline-block">Détails</a>
+          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <p class="text-gray-500 text-center py-4"><i class="fas fa-inbox"></i> Aucune commande active</p>
+    <% end %>
+  </div>
+
+  <div class="bg-white rounded-xl shadow p-6">
+    <h2 class="font-bold text-lg mb-4"><i class="fas fa-history text-gray-600"></i> Historique</h2>
+    <% if @order_history.any? %>
+      <div class="space-y-2">
+        <% @order_history.each do |order| %>
+          <div class="border-b pb-2 flex justify-between">
+            <span class="text-sm"><%= order.cook.full_name %></span>
+            <span class="text-sm text-gray-500"><%= number_to_currency(order.total_amount, unit: "CFA", format: "%n %u") %></span>
+          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <p class="text-gray-500 text-center py-4">Aucun historique</p>
+    <% end %>
+  </div>
+</div>

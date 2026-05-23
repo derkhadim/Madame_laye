@@ -1,0 +1,44 @@
+<div class="flex justify-between items-center mb-6">
+  <h1 class="text-2xl font-bold"><i class="fas fa-shopping-cart text-orange-600"></i>
+    <%= current_user.cook? ? "Commandes reçues" : current_user.delivery_driver? ? "Mes livraisons" : "Mes commandes" %>
+  </h1>
+</div>
+
+<div class="bg-white rounded-xl shadow overflow-hidden">
+  <table class="w-full text-sm">
+    <thead class="bg-gray-100">
+      <tr>
+        <th class="text-left p-3">#</th>
+        <% unless current_user.cook? %><th class="text-left p-3">Cuisinier</th><% end %>
+        <% unless current_user.client? %><th class="text-left p-3">Client</th><% end %>
+        <th class="text-left p-3">Articles</th>
+        <th class="text-left p-3">Total</th>
+        <th class="text-left p-3">Statut</th>
+        <th class="text-left p-3">Date</th>
+        <th class="text-left p-3">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @orders.each do |order| %>
+        <tr class="border-b hover:bg-gray-50">
+          <td class="p-3">#<%= order.id %></td>
+          <% unless current_user.cook? %><td class="p-3"><%= order.cook.full_name %></td><% end %>
+          <% unless current_user.client? %><td class="p-3"><%= order.customer.full_name %></td><% end %>
+          <td class="p-3"><%= order.order_items.count %></td>
+          <td class="p-3 font-medium"><%= number_to_currency(order.total_amount, unit: "CFA", format: "%n %u") %></td>
+          <td class="p-3">
+            <span class="text-xs px-2 py-0.5 rounded-full
+              <%= 'bg-yellow-100 text-yellow-800' if order.pending? %>
+              <%= 'bg-blue-100 text-blue-800' if order.accepted? %>
+              <%= 'bg-purple-100 text-purple-800' if order.in_delivery? %>
+              <%= 'bg-green-100 text-green-800' if order.delivered? %>
+              <%= 'bg-gray-100 text-gray-800' if order.completed? %>
+              <%= 'bg-red-100 text-red-800' if order.cancelled? %>
+            "><%= order.status %></td>
+          <td class="p-3 text-gray-500"><%= l(order.created_at, format: :short) %></td>
+          <td class="p-3"><a href="/orders/<%= order.id %>" class="text-orange-600 hover:underline"><i class="fas fa-eye"></i></a></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

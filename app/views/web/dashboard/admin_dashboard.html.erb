@@ -1,0 +1,48 @@
+<div class="grid grid-cols-1 md:grid-cols-5 gap-6 mb-8">
+  <div class="bg-white rounded-xl shadow p-6">
+    <p class="text-3xl font-bold text-orange-600"><%= @total_cooks %></p>
+    <p class="text-sm text-gray-500">Cuisiniers</p>
+  </div>
+  <div class="bg-white rounded-xl shadow p-6">
+    <p class="text-3xl font-bold text-blue-600"><%= @total_clients %></p>
+    <p class="text-sm text-gray-500">Clients</p>
+  </div>
+  <div class="bg-white rounded-xl shadow p-6">
+    <p class="text-3xl font-bold text-green-600"><%= @total_drivers %></p>
+    <p class="text-sm text-gray-500">Livreurs</p>
+  </div>
+  <div class="bg-white rounded-xl shadow p-6">
+    <p class="text-3xl font-bold text-purple-600"><%= @total_orders %></p>
+    <p class="text-sm text-gray-500">Commandes total</p>
+  </div>
+  <div class="bg-white rounded-xl shadow p-6">
+    <p class="text-3xl font-bold text-yellow-600"><%= @pending_orders %></p>
+    <p class="text-sm text-gray-500">En attente</p>
+  </div>
+</div>
+
+<div class="bg-white rounded-xl shadow p-6">
+  <h2 class="font-bold text-lg mb-4"><i class="fas fa-users text-orange-600"></i> Gestion des utilisateurs</h2>
+  <div class="overflow-x-auto">
+    <table class="w-full text-sm">
+      <thead>
+        <tr class="text-left border-b">
+          <th class="pb-2">Nom</th>
+          <th class="pb-2">Téléphone</th>
+          <th class="pb-2">Rôle</th>
+          <th class="pb-2">Statut</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% User.order(created_at: :desc).limit(20).each do |u| %>
+          <tr class="border-b hover:bg-gray-50">
+            <td class="py-2"><%= u.full_name %></td>
+            <td class="py-2"><%= u.phone_number %></td>
+            <td class="py-2"><span class="text-xs px-2 py-0.5 rounded-full bg-gray-100"><%= u.role %></span></td>
+            <td class="py-2"><%= u.status %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

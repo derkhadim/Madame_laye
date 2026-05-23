@@ -1,0 +1,95 @@
+<div class="max-w-2xl mx-auto">
+  <a href="/orders" class="text-orange-600 hover:underline mb-4 inline-block"><i class="fas fa-arrow-left"></i> Retour</a>
+
+  <div class="bg-white rounded-xl shadow-md overflow-hidden">
+    <div class="bg-orange-600 text-white p-6">
+      <div class="flex justify-between items-start">
+        <div>
+          <h1 class="text-xl font-bold">Commande #<%= @order.id %></h1>
+          <p class="text-orange-100 text-sm"><%= l(@order.created_at, format: :long) %></p>
+        </div>
+        <span class="text-xs px-3 py-1 rounded-full bg-white text-orange-600 font-medium"><%= @order.status %></span>
+      </div>
+    </div>
+
+    <div class="p-6 space-y-6">
+      <div class="grid md:grid-cols-2 gap-4">
+        <div>
+          <p class="text-sm text-gray-500">Cuisinier</p>
+          <p class="font-medium"><%= @order.cook.full_name %></p>
+          <p class="text-sm"><%= @order.cook.phone_number %></p>
+        </div>
+        <div>
+          <p class="text-sm text-gray-500">Client</p>
+          <p class="font-medium"><%= @order.customer.full_name %></p>
+          <p class="text-sm"><%= @order.customer.phone_number %></p>
+        </div>
+      </div>
+
+      <div>
+        <p class="text-sm text-gray-500 mb-2">Adresse de livraison</p>
+        <p class="font-medium"><%= @order.delivery_address %></p>
+      </div>
+
+      <% if @order.delivery_driver %>
+        <div>
+          <p class="text-sm text-gray-500">Livreur</p>
+          <p class="font-medium"><%= @order.delivery_driver.full_name %></p>
+          <p class="text-sm"><%= @order.delivery_driver.phone_number %></p>
+        </div>
+      <% end %>
+
+      <div>
+        <p class="text-sm text-gray-500 mb-2">Articles</p>
+        <div class="divide-y">
+          <% @order.order_items.each do |oi| %>
+            <div class="flex justify-between py-2">
+              <span><%= oi.quantity %>x <%= oi.item.try(:name) || "Article" %></span>
+              <span class="font-medium"><%= number_to_currency(oi.unit_price * oi.quantity, unit: "CFA", format: "%n %u") %></span>
+            </div>
+          <% end %>
+        </div>
+        <div class="flex justify-between pt-3 border-t font-bold text-lg">
+          <span>Total</span>
+          <span class="text-orange-600"><%= number_to_currency(@order.total_amount, unit: "CFA", format: "%n %u") %></span>
+        </div>
+      </div>
+
+      <div class="flex gap-3 flex-wrap">
+        <% if current_user.cook? && @order.cook_id == current_user.id %>
+          <% if @order.pending? %>
+            <a href="/orders/<%= @order.id %>/accept" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700">
+              <i class="fas fa-check"></i> Accepter
+            </a>
+            <a href="/orders/<%= @order.id %>/cancel" class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700"
+               data-confirm="Annuler cette commande ?">
+              <i class="fas fa-times"></i> Refuser
+            </a>
+          <% elsif @order.accepted? %>
+            <a href="/orders/<%= @order.id %>/assign" class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700">
+              <i class="fas fa-truck"></i> Assigner un livreur
+            </a>
+          <% elsif @order.delivered? %>
+            <a href="/orders/<%= @order.id %>/complete" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700">
+              <i class="fas fa-check-double"></i> Terminer
+            </a>
+            <a href="/orders/<%= @order.id %>/confirm_reception" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+              <i class="fas fa-handshake"></i> Confirmer réception
+            </a>
+          <% end %>
+        <% end %>
+        <% if current_user.delivery_driver? && @order.delivery_driver_id == current_user.id && @order.in_delivery? %>
+          <a href="/orders/<%= @order.id %>/mark_delivered" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700">
+            <i class="fas fa-check-circle"></i> Marquer livré
+          </a>
+        <% end %>
+        <% if current_user.client? && @order.customer_id == current_user.id && (@order.pending? || @order.accepted?) %>
+          <a href="/orders/<%= @order.id %>/cancel" class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700"
+             data-confirm="Annuler cette commande ?">
+            <i class="fas fa-times"></i> Annuler
+          </a>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

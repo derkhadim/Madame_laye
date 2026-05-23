@@ -1,0 +1,35 @@
+<div class="max-w-lg mx-auto">
+  <div class="bg-white rounded-xl shadow-md p-8">
+    <h1 class="text-2xl font-bold mb-6 text-center"><i class="fas fa-wallet text-orange-600"></i> Mon solde</h1>
+
+    <div class="text-center py-8">
+      <p class="text-5xl font-bold text-orange-600 mb-2"><%= number_to_currency(@balance, unit: "CFA", format: "%n %u") %></p>
+      <p class="text-gray-500">Solde disponible</p>
+      <% if @pending_withdrawals > 0 %>
+        <p class="text-sm text-yellow-600 mt-1"><i class="fas fa-clock"></i> <%= number_to_currency(@pending_withdrawals, unit: "CFA", format: "%n %u") %> en attente de validation</p>
+      <% end %>
+    </div>
+
+    <form action="/payments/withdrawal" method="post" class="space-y-4">
+      <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Montant à retirer</label>
+        <input type="number" name="amount" step="100" min="100" max="<%= @balance - @pending_withdrawals %>" required
+               class="w-full border rounded-lg px-3 py-2">
+      </div>
+      <button type="submit" class="w-full bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 font-medium">
+        <i class="fas fa-money-bill-wave"></i> Demander un retrait
+      </button>
+    </form>
+
+    <div class="mt-6 text-center">
+      <a href="/withdrawals" class="text-orange-600 hover:underline text-sm">
+        <i class="fas fa-history"></i> Voir l'historique des retraits
+      </a>
+    </div>
+
+    <a href="/dashboard" class="block text-center mt-4 text-orange-600 hover:underline text-sm">
+      <i class="fas fa-arrow-left"></i> Retour au tableau de bord
+    </a>
+  </div>
+</div>
