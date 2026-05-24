@@ -85,5 +85,9 @@ test:
 # for a full overview on how database connection configuration can be specified.
 #
 production:
-  url: <%= ENV["DATABASE_URL"] %>
-  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  <<: *default
+  database: <%= ENV["PGDATABASE"] || "madame_laye_api_production" %>
+  username: <%= ENV["PGUSER"] || "madame_laye_api" %>
+  password: <%= ENV["PGPASSWORD"] %>
+  host: <%= ENV["PGHOST"] || "localhost" %>
+  port: <%= ENV["PGPORT"] || 5432 %>
