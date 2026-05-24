@@ -85,7 +85,9 @@ test:
 # for a full overview on how database connection configuration can be specified.
 #
 production:
-  <<: *default
+  adapter: postgresql
+  encoding: unicode
+  max_connections: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   database: <%= ENV["PGDATABASE"] || "madame_laye_api_production" %>
   username: <%= ENV["PGUSER"] || "madame_laye_api" %>
   password: <%= ENV["PGPASSWORD"] %>
