@@ -10,6 +10,7 @@ Rails.application.routes.draw do
       patch "profile/location", to: "users#update_location"
 
       get "cooks/nearby", to: "users#cooks_nearby"
+      get "cooks/:id", to: "users#cook_profile"
       get "drivers/nearby", to: "users#delivery_drivers_nearby"
 
       get "menus/search", to: "menus#search"
@@ -28,6 +29,7 @@ Rails.application.routes.draw do
           post :accept
           post :complete
           post :assign_driver
+          post :accept_delivery
           post :confirm_reception
           post :cancel
           post :mark_delivered
@@ -81,6 +83,7 @@ Rails.application.routes.draw do
   get "orders/:id/assign", to: "web/orders#assign"
   post "orders/:id/assign_driver", to: "web/orders#assign_driver"
   get "orders/:id/mark_delivered", to: "web/orders#mark_delivered"
+  get "orders/:id/accept_delivery", to: "web/orders#accept_delivery"
   get "orders/:id/complete", to: "web/orders#complete"
   get "orders/:id/confirm_reception", to: "web/orders#confirm_reception"
   get "orders/:id/cancel", to: "web/orders#cancel"

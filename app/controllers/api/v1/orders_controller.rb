@@ -101,7 +101,19 @@ module Api
         return render_error("Livreur non trouvé", :not_found) unless driver&.delivery_driver?
 
         @order.assign_delivery_driver!(driver)
-        render_success(order_response(@order), "Livreur assigné")
+        render_success(order_response(@order), "Livreur assigné — en attente d'acceptation")
+      end
+
+      def accept_delivery
+        return render_error("Action réservée aux livreurs") unless current_user.delivery_driver?
+        return render_error("Commande non trouvée", :not_found) unless @order.delivery_driver_id == current_user.id
+
+        if @order.driver_assigned?
+          @order.accept_delivery!
+          render_success(order_response(@order), "Mission acceptée")
+        else
+          render_error("Action impossible")
+        end
       end
 
       def confirm_reception

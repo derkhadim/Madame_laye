@@ -41,11 +41,16 @@
                 <p class="text-sm text-gray-500"><%= order.delivery_address %></p>
               </div>
               <span class="text-xs px-2 py-0.5 rounded-full
+                <%= 'bg-yellow-100 text-yellow-800' if order.driver_assigned? %>
                 <%= 'bg-purple-100 text-purple-800' if order.in_delivery? %>
                 <%= 'bg-green-100 text-green-800' if order.delivered? %>
-              "><%= order.status %></span>
+              "><%= order.status.humanize %></span>
             </div>
-            <% if order.in_delivery? %>
+            <% if order.driver_assigned? %>
+              <a href="/orders/<%= order.id %>/accept_delivery" class="bg-purple-600 text-white px-3 py-1 rounded text-sm inline-block mt-2 hover:bg-purple-700">
+                <i class="fas fa-check-circle"></i> Accepter la mission
+              </a>
+            <% elsif order.in_delivery? %>
               <a href="/orders/<%= order.id %>/mark_delivered" class="bg-green-500 text-white px-3 py-1 rounded text-sm inline-block mt-2 hover:bg-green-600"
                  data-turbo-method="post">
                 <i class="fas fa-check-circle"></i> Marquer livré

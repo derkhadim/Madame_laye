@@ -76,6 +76,10 @@
             <a href="/orders/<%= @order.id %>/assign" class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700">
               <i class="fas fa-truck"></i> Assigner un livreur
             </a>
+          <% elsif @order.driver_assigned? %>
+            <span class="bg-yellow-100 text-yellow-800 px-4 py-2 rounded-lg font-medium text-sm">
+              <i class="fas fa-clock"></i> En attente d'acceptation du livreur
+            </span>
           <% elsif @order.delivered? %>
             <a href="/orders/<%= @order.id %>/complete" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700">
               <i class="fas fa-check-double"></i> Terminer
@@ -84,6 +88,11 @@
               <i class="fas fa-handshake"></i> Confirmer réception
             </a>
           <% end %>
+        <% end %>
+        <% if current_user.delivery_driver? && @order.delivery_driver_id == current_user.id && @order.driver_assigned? %>
+          <a href="/orders/<%= @order.id %>/accept_delivery" class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700">
+            <i class="fas fa-check-circle"></i> Accepter la mission
+          </a>
         <% end %>
         <% if current_user.delivery_driver? && @order.delivery_driver_id == current_user.id && @order.in_delivery? %>
           <a href="/orders/<%= @order.id %>/mark_delivered" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700">

@@ -38,11 +38,23 @@ class Web::OrdersController < WebController
 
   def assign_driver
     @order = current_user.orders_as_cook.find(params[:id])
-    driver = User.delivery_driver.find(params[:driver_id])
+    driver = User.delivery_driver.active.find(params[:driver_id])
     @order.assign_delivery_driver!(driver)
-    redirect_to "/dashboard", notice: "Livreur assigné"
+    redirect_to "/orders/#{@order.id}", notice: "Livreur assigné — en attente d'acceptation"
   rescue ActiveRecord::RecordNotFound
     redirect_to "/orders/#{@order.id}", alert: "Livreur non trouvé"
+  end
+
+  def accept_delivery
+    @order = current_user.orders_as_delivery_driver.find(params[:id])
+    if @order.driver_assigned?
+      @order.accept_delivery!
+      redirect_to "/dashboard", notice: "Mission acceptée ! Vous pouvez maintenant livrer"
+    else
+      redirect_to "/deliveries", alert: "Action impossible"
+    end
+  rescue ActiveRecord::RecordNotFound
+    redirect_to "/deliveries", alert: "Commande non trouvée"
   end
 
   def mark_delivered

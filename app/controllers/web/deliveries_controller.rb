@@ -10,7 +10,7 @@ class Web::DeliveriesController < WebController
   def take
     @order = Order.where(status: :accepted).find(params[:id])
     @order.assign_delivery_driver!(current_user)
-    redirect_to "/deliveries", notice: "Livraison prise en charge"
+    redirect_to "/deliveries", notice: "Livraison prise en charge — veuillez accepter la mission"
   rescue ActiveRecord::RecordNotFound
     redirect_to "/deliveries", alert: "Commande déjà prise"
   end

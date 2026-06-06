@@ -10,7 +10,8 @@ class Order < ApplicationRecord
     in_delivery: 3,
     delivered: 4,
     completed: 5,
-    cancelled: 6
+    cancelled: 6,
+    driver_assigned: 7
   }
 
   has_many :order_items, dependent: :destroy
@@ -35,7 +36,11 @@ class Order < ApplicationRecord
   end
 
   def assign_delivery_driver!(driver)
-    update(delivery_driver: driver, status: :in_delivery)
+    update(delivery_driver: driver, status: :driver_assigned)
+  end
+
+  def accept_delivery!
+    update(status: :in_delivery)
   end
 
   def mark_delivered!

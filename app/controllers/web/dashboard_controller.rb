@@ -7,7 +7,7 @@ class Web::DashboardController < WebController
     case @user.role
     when "cook"
       @pending_orders = @user.orders_as_cook.pending_orders.count
-      @in_progress_orders = @user.orders_as_cook.where(status: [:accepted, :in_progress, :in_delivery]).count
+      @in_progress_orders = @user.orders_as_cook.where(status: [:accepted, :in_progress, :driver_assigned, :in_delivery]).count
       @today_meals = @user.meals.available.count
       @today_orders = @user.orders_as_cook.today_orders
       render :cook_dashboard
@@ -17,7 +17,8 @@ class Web::DashboardController < WebController
       render :client_dashboard
     when "delivery_driver"
       @available_orders = Order.where(status: :accepted).count
-      @my_deliveries = @user.orders_as_delivery_driver.where(status: [:in_delivery, :delivered])
+      @my_deliveries = @user.orders_as_delivery_driver.where(status: [:driver_assigned, :in_delivery, :delivered])
+      @pending_acceptance = @user.orders_as_delivery_driver.driver_assigned.count
       @balance = @user.balance
       render :driver_dashboard
     when "admin", "supervisor"

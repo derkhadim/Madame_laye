@@ -49,6 +49,37 @@ module Api
         render_success(drivers)
       end
 
+      def cook_profile
+        cook = User.cook.find(params[:id])
+        today = Date.current.strftime("%A").downcase
+
+        meals = cook.meals.available.where(day_of_week: today).order(meal_type: :asc).map { |m|
+          {
+            id: m.id, name: m.name, description: m.description, price: m.price.to_f,
+            meal_type: m.meal_type, portion_count: m.portion_count
+          }
+        }
+
+        products = cook.daily_products.for_date(Date.current).order(created_at: :desc).map { |p|
+          {
+            id: p.id, name: p.name, description: p.description, price: p.price.to_f,
+            category: p.category, quantity_available: p.quantity_available
+          }
+        }
+
+        render_success({
+          cook: {
+            id: cook.id, first_name: cook.first_name, last_name: cook.last_name,
+            address: cook.address, phone_number: cook.phone_number,
+            latitude: cook.latitude, longitude: cook.longitude, avatar: cook.avatar
+          },
+          meals: meals,
+          products: products
+        })
+      rescue ActiveRecord::RecordNotFound
+        render_error("Cuisinier non trouvé", :not_found)
+      end
+
       private
 
       def update_params
