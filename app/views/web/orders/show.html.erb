@@ -83,7 +83,7 @@
             <i class="fas fa-check-circle"></i> Marquer livré
           </a>
         <% end %>
-        <% if current_user.client? && @order.customer_id == current_user.id && (@order.pending? || @order.accepted?) %>
+        <% if current_user.client? && @order.customer_id == current_user.id && @order.pending? %>
           <a href="/orders/<%= @order.id %>/cancel" class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700"
              data-confirm="Annuler cette commande ?">
             <i class="fas fa-times"></i> Annuler

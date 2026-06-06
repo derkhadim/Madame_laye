@@ -76,8 +76,12 @@ class Web::OrdersController < WebController
   def cancel
     @order = Order.find(params[:id])
     if @order.customer_id == current_user.id || @order.cook_id == current_user.id
-      @order.cancel! if @order.pending? || @order.accepted?
-      redirect_to "/orders", notice: "Commande annulée"
+      if @order.pending?
+        @order.cancel!
+        redirect_to "/orders", notice: "Commande annulée"
+      else
+        redirect_to "/orders", alert: "Impossible d'annuler une commande déjà acceptée"
+      end
     else
       redirect_to "/orders", alert: "Non autorisé"
     end

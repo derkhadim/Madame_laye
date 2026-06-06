@@ -114,11 +114,11 @@ module Api
 
       def cancel
         if @order.customer_id == current_user.id || @order.cook_id == current_user.id
-          if @order.pending? || @order.accepted?
+          if @order.pending?
             @order.cancel!
             render_success(nil, "Commande annulée")
           else
-            render_error("Impossible d'annuler une commande en cours")
+            render_error("Impossible d'annuler une commande déjà acceptée")
           end
         else
           render_error("Non autorisé", :forbidden)
