@@ -1,0 +1,6 @@
+services:
+  - type: web
+    name: madame-laye
+    runtime: ruby
+    buildCommand: bundle install && bundle exec bootsnap precompile --gemfile
+    startCommand: bin/rails db:prepare && bin/rails server -p $PORT -b 0.0.0.0

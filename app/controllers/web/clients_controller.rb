@@ -9,17 +9,27 @@ class Web::ClientsController < WebController
     base_meals = Meal.available.where(day_of_week: Meal.day_of_weeks[today])
     base_meals = base_meals.where(meal_type: meal_type_filter) if meal_type_filter.present?
 
-    meals = if keyword.present?
-      base_meals.where("LOWER(name) LIKE ?", "%#{keyword}%")
+    if keyword.present?
+      terms = keyword.split(/\s+/).map { |t| ActiveRecord::Base.sanitize_sql_like(t) }
+      conditions = terms.map { |t| "(LOWER(meals.name) LIKE ? OR LOWER(meals.description) LIKE ?)" }.join(" OR ")
+      bindings = terms.flat_map { |t| ["%#{t}%", "%#{t}%"] }
+      cook_conditions = terms.map { |t| "(LOWER(users.first_name) LIKE ? OR LOWER(users.last_name) LIKE ?)" }.join(" OR ")
+      cook_bindings = terms.flat_map { |t| ["%#{t}%", "%#{t}%"] }
+
+      meals = base_meals.joins(:user).where("(#{conditions}) OR (#{cook_conditions})", *bindings, *cook_bindings)
     else
-      base_meals.limit(10)
+      meals = base_meals.limit(10)
     end
 
     @results = meals.group_by(&:user).map { |cook, m| { cook: cook, meals: m, products: [] } }
 
     if keyword.present?
+      terms = keyword.split(/\s+/).map { |t| ActiveRecord::Base.sanitize_sql_like(t) }
+      product_conditions = terms.map { |t| "(LOWER(name) LIKE ? OR LOWER(description) LIKE ?)" }.join(" OR ")
+      product_bindings = terms.flat_map { |t| ["%#{t}%", "%#{t}%"] }
+
       matching_products = DailyProduct.for_date(Date.current).available
-        .where("LOWER(name) LIKE ?", "%#{keyword}%")
+        .where(product_conditions, *product_bindings)
         .order(created_at: :desc)
 
       matching_products.group_by(&:user).each do |cook, prods|
