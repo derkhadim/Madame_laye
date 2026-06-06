@@ -39,6 +39,13 @@
         </div>
       <% end %>
 
+      <% if @order.notes.present? %>
+        <div>
+          <p class="text-sm text-gray-500 mb-2">Notes du client</p>
+          <p class="text-gray-700 italic bg-gray-50 p-3 rounded-lg"><%= @order.notes %></p>
+        </div>
+      <% end %>
+
       <div>
         <p class="text-sm text-gray-500 mb-2">Articles</p>
         <div class="divide-y">
