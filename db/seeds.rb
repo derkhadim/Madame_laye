@@ -1,10 +1,31 @@
+# Dakar quartiers
+DAKAR_QUARTIERS = [
+  "Plateau", "Médina", "Gorée", "Fass", "Colobane", "Gueule Tapée", "Fann",
+  "Point E", "Amitié", "Mermoz", "Sacré-Cœur", "Liberté", "Baobab",
+  "Sicap Karack", "Cité Keur Gorgui", "HLM", "Dieuppeul", "Derklé",
+  "Grand Dakar", "Biscuiterie", "Patte d'Oie", "Nord Foire", "Ouest Foire",
+  "Almadies", "Ngor", "Île de Ngor", "Ouakam", "Yoff", "Mamelles", "Virage",
+  "Grand Yoff", "Parcelles Assainies", "Cambérène", "Hann Bel-Air", "Grand Médine",
+  "Cité Mixta", "Sicap Liberté", "Soprim",
+  "Liberté 1", "Liberté 2", "Liberté 3", "Liberté 4", "Liberté 5", "Liberté 6",
+  "Sacré-Cœur 1", "Sacré-Cœur 2", "Sacré-Cœur 3",
+  "Amitié 1", "Amitié 2", "Amitié 3",
+]
+
+puts "Loaded #{DAKAR_QUARTIERS.size} Dakar quartiers"
+
+# Seed quartiers
+puts "\nSeeding quartiers..."
+DAKAR_QUARTIERS.each { |q| Quartier.find_or_create_by!(nom: q) }
+puts "#{Quartier.count} quartiers created"
+
 # Create admin user
 admin = User.create!(
   phone_number: "221770000001",
   password: "password123",
   first_name: "Admin",
   last_name: "MadameLaye",
-  address: "Dakar, Sénégal",
+  address: "Plateau",
   latitude: 14.7167,
   longitude: -17.4677,
   role: :admin,
@@ -14,12 +35,12 @@ puts "Admin created: #{admin.phone_number}"
 
 # Create cooks
 cooks = [
-  { phone: "221771234567", first: "Mariama", last: "Diallo", lat: 14.7200, lng: -17.4700, addr: "Ouakam, Dakar" },
-  { phone: "221772345678", first: "Aminata", last: "Sow", lat: 14.7300, lng: -17.4600, addr: "Mermoz, Dakar" },
-  { phone: "221773456789", first: "Fatou", last: "Diop", lat: 14.7100, lng: -17.4800, addr: "Ngor, Dakar" },
-  { phone: "221774567890", first: "Aïcha", last: "Ba", lat: 14.7250, lng: -17.4650, addr: "Fann, Dakar" },
-  { phone: "221775500001", first: "Rokhaya", last: "Gueye", lat: 14.7150, lng: -17.4550, addr: "Sacre Coeur, Dakar" },
-  { phone: "221775500002", first: "Ndèye", last: "Sall", lat: 14.7350, lng: -17.4750, addr: "Almadies, Dakar" },
+  { phone: "221771234567", first: "Mariama", last: "Diallo", lat: 14.7200, lng: -17.4700, addr: "Ouakam" },
+  { phone: "221772345678", first: "Aminata", last: "Sow", lat: 14.7300, lng: -17.4600, addr: "Mermoz" },
+  { phone: "221773456789", first: "Fatou", last: "Diop", lat: 14.7100, lng: -17.4800, addr: "Ngor" },
+  { phone: "221774567890", first: "Aïcha", last: "Ba", lat: 14.7250, lng: -17.4650, addr: "Point E" },
+  { phone: "221775500001", first: "Rokhaya", last: "Gueye", lat: 14.7150, lng: -17.4550, addr: "Sacré-Cœur" },
+  { phone: "221775500002", first: "Ndèye", last: "Sall", lat: 14.7350, lng: -17.4750, addr: "Almadies" },
 ]
 
 cooks.each do |c|
@@ -100,25 +121,6 @@ cooks.each do |c|
     ],
   }
 
-  # Daily products with real names
-  products_by_category = {
-    petit_fours: [
-      { name: "Samoussas", desc: "Beignets triangulaires farcis à la viande hachée" },
-      { name: "Nems", desc: "Rouleaux de printemps frits, farcis au poulet" },
-      { name: "Pastels", desc: "Beignets de poisson à la pâte moelleuse" },
-    ],
-    plat_sale: [
-      { name: "Sandwich Thiéboudiène", desc: "Pain garni de poisson et légumes" },
-      { name: "Pain Yassa", desc: "Sandwich poulet Yassa sauce oignons" },
-      { name: "Fataya Viande", desc: "Beignets farcis viande, vente à l'unité" },
-    ],
-    gateaux: [
-      { name: "Thiakry", desc: "Dessert à base de couscous de mil et lait caillé" },
-      { name: "Ngalakh", desc: "Crème de mil au lait, beurre de cacahuète et fruits" },
-      { name: "Beignets", desc: "Beignets sucrés moelleux, vente à la pièce" },
-    ],
-  }
-
   DailyProduct.categories.each_key do |cat|
     items = products_by_category[cat.to_sym]
     items.each do |item|
@@ -138,8 +140,8 @@ end
 
 # Create clients
 clients = [
-  { phone: "221775678901", first: "Moussa", last: "Ndiaye", lat: 14.7150, lng: -17.4750, addr: "Point E, Dakar" },
-  { phone: "221776789012", first: "Khadija", last: "Sy", lat: 14.7220, lng: -17.4680, addr: "Sicap, Dakar" },
+  { phone: "221775678901", first: "Moussa", last: "Ndiaye", lat: 14.7150, lng: -17.4750, addr: "Point E" },
+  { phone: "221776789012", first: "Khadija", last: "Sy", lat: 14.7220, lng: -17.4680, addr: "Grand Dakar" },
 ]
 
 clients.each do |c|
@@ -159,8 +161,8 @@ end
 
 # Create delivery drivers
 drivers = [
-  { phone: "221777890123", first: "Pape", last: "Gueye", lat: 14.7180, lng: -17.4720, addr: "HLM, Dakar" },
-  { phone: "221778901234", first: "Ousmane", last: "Faye", lat: 14.7120, lng: -17.4780, addr: "Medina, Dakar" },
+  { phone: "221777890123", first: "Pape", last: "Gueye", lat: 14.7180, lng: -17.4720, addr: "HLM" },
+  { phone: "221778901234", first: "Ousmane", last: "Faye", lat: 14.7120, lng: -17.4780, addr: "Médina" },
 ]
 
 drivers.each do |d|
@@ -232,6 +234,7 @@ client_ids.each_with_index do |client_id, ci|
 end
 
 puts "\nSeed completed!"
+puts "Quartiers count: #{Quartier.count}"
 puts "Cooks count: #{User.cook.count}"
 puts "Clients count: #{User.client.count}"
 puts "Drivers count: #{User.delivery_driver.count}"

@@ -4,75 +4,72 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title><%= @page_title || "Madame Laye" %></title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <%= stylesheet_link_tag "tailwind" %>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <style>
-    .flash { transition: opacity 0.5s; }
-  </style>
 </head>
-<body class="bg-gray-50 min-h-screen flex flex-col">
+<body class="min-h-screen flex flex-col bg-paper-white text-graphite antialiased">
 
-  <nav class="bg-orange-600 text-white shadow-lg">
-    <div class="max-w-7xl mx-auto px-4">
-      <div class="flex justify-between items-center h-16">
-        <div class="flex items-center gap-6">
-          <a href="/" class="text-xl font-bold flex items-center gap-2">
-            <i class="fas fa-utensils"></i> Madame Laye
+  <header class="bg-white border-b border-border">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="flex justify-between items-center h-20 px-2">
+        <div class="flex items-center gap-8">
+          <a href="/" class="font-bold text-lg flex items-center gap-3">
+            <i class="fas fa-utensils text-ember-orange"></i> Madame Laye
           </a>
           <% if logged_in? %>
-            <div class="hidden md:flex items-center gap-4 text-sm">
-              <a href="/menus/search" class="hover:text-orange-200"><i class="fas fa-search"></i> Rechercher</a>
+            <nav class="hidden md:flex items-center gap-2">
+              <a href="/menus/search" class="btn btn-ghost btn-sm"><i class="fas fa-search"></i> Rechercher</a>
               <% if current_user.cook? %>
-                <a href="/dashboard" class="hover:text-orange-200"><i class="fas fa-chart-pie"></i> Dashboard</a>
-                <a href="/meals" class="hover:text-orange-200"><i class="fas fa-calendar-week"></i> Plats</a>
-                <a href="/daily_products" class="hover:text-orange-200"><i class="fas fa-box"></i> Produits</a>
-                <a href="/orders" class="hover:text-orange-200"><i class="fas fa-shopping-cart"></i> Commandes</a>
+                <a href="/dashboard" class="btn btn-ghost btn-sm"><i class="fas fa-chart-pie"></i> Dashboard</a>
+                <a href="/meals" class="btn btn-ghost btn-sm"><i class="fas fa-calendar-week"></i> Plats</a>
+                <a href="/daily_products" class="btn btn-ghost btn-sm"><i class="fas fa-box"></i> Produits</a>
+                <a href="/orders" class="btn btn-ghost btn-sm"><i class="fas fa-shopping-cart"></i> Commandes</a>
               <% elsif current_user.client? %>
-                <a href="/orders" class="hover:text-orange-200"><i class="fas fa-shopping-cart"></i> Mes commandes</a>
+                <a href="/orders" class="btn btn-ghost btn-sm"><i class="fas fa-shopping-cart"></i> Mes commandes</a>
               <% elsif current_user.delivery_driver? %>
-                <a href="/deliveries" class="hover:text-orange-200"><i class="fas fa-truck"></i> Livraisons</a>
-                <a href="/payments/balance" class="hover:text-orange-200"><i class="fas fa-wallet"></i> Solde</a>
+                <a href="/deliveries" class="btn btn-ghost btn-sm"><i class="fas fa-truck"></i> Livraisons</a>
+                <a href="/payments/balance" class="btn btn-ghost btn-sm"><i class="fas fa-wallet"></i> Solde</a>
               <% elsif current_user.admin? || current_user.supervisor? %>
-                <a href="/admin" class="hover:text-orange-200"><i class="fas fa-chart-pie"></i> Dashboard</a>
-                <a href="/orders" class="hover:text-orange-200"><i class="fas fa-shopping-cart"></i> Commandes</a>
-                <a href="/admin/withdrawals" class="hover:text-orange-200"><i class="fas fa-money-bill-wave"></i> Retraits</a>
-                <a href="/menus/search" class="hover:text-orange-200"><i class="fas fa-search"></i> Rechercher</a>
+                <a href="/admin" class="btn btn-ghost btn-sm"><i class="fas fa-chart-pie"></i> Dashboard</a>
+                <a href="/orders" class="btn btn-ghost btn-sm"><i class="fas fa-shopping-cart"></i> Commandes</a>
+                <a href="/admin/withdrawals" class="btn btn-ghost btn-sm"><i class="fas fa-money-bill-wave"></i> Retraits</a>
+                <a href="/menus/search" class="btn btn-ghost btn-sm"><i class="fas fa-search"></i> Rechercher</a>
               <% end %>
-            </div>
+            </nav>
           <% end %>
         </div>
-        <div class="flex items-center gap-3">
+        <div class="flex items-center gap-4">
           <% if logged_in? %>
-            <span class="text-sm hidden md:inline"><i class="fas fa-user"></i> <%= current_user.full_name %></span>
-            <span class="text-xs bg-orange-700 px-2 py-1 rounded"><%= current_user.role %></span>
-            <a href="/logout" class="bg-orange-700 hover:bg-orange-800 px-3 py-1 rounded text-sm">
+            <span class="text-sm text-gray-500 hidden md:inline"><i class="fas fa-user"></i> <%= current_user.full_name %></span>
+            <span class="badge badge-secondary"><%= current_user.role %></span>
+            <a href="/logout" class="btn btn-ghost btn-sm">
               <i class="fas fa-sign-out-alt"></i>
             </a>
           <% else %>
-            <a href="/login" class="hover:text-orange-200">Connexion</a>
-            <a href="/signup" class="bg-orange-700 hover:bg-orange-800 px-3 py-1 rounded text-sm">Inscription</a>
+            <a href="/login" class="btn btn-ghost btn-sm">Connexion</a>
+            <a href="/signup" class="btn btn-primary btn-sm">Inscription</a>
           <% end %>
         </div>
       </div>
     </div>
-  </nav>
+  </header>
 
   <% if flash[:notice] %>
-    <div class="bg-green-100 border-b border-green-200 text-green-800 px-4 py-2 text-center flash" data-flash>
-      <%= flash[:notice] %>
+    <div class="bg-verdant-green/[0.08] border-b border-verdant-green/20 text-verdant-green px-6 py-3 text-sm text-center" data-flash>
+      <i class="fas fa-check-circle"></i> <%= flash[:notice] %>
     </div>
   <% end %>
   <% if flash[:alert] %>
-    <div class="bg-red-100 border-b border-red-200 text-red-800 px-4 py-2 text-center flash" data-flash>
-      <%= flash[:alert] %>
+    <div class="bg-alert-red/[0.08] border-b border-alert-red/20 text-alert-red px-6 py-3 text-sm text-center" data-flash>
+      <i class="fas fa-exclamation-circle"></i> <%= flash[:alert] %>
     </div>
   <% end %>
 
-  <main class="flex-1 max-w-7xl mx-auto w-full px-4 py-6">
+  <main class="flex-1 max-w-7xl mx-auto w-full px-6 py-8">
     <%= yield %>
   </main>
 
-  <footer class="bg-gray-800 text-gray-400 text-center py-4 text-sm">
+  <footer class="border-t border-border py-8 text-center text-sm text-gray-500">
     &copy; 2026 Madame Laye — Tous droits réservés
   </footer>
 

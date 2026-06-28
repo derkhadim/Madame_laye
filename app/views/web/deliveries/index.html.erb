@@ -1,60 +1,64 @@
 <div class="grid md:grid-cols-2 gap-6">
-  <div class="bg-white rounded-xl shadow p-6">
-    <h2 class="font-bold text-lg mb-4"><i class="fas fa-box text-green-600"></i> Commandes disponibles</h2>
-    <% if @available.any? %>
-      <div class="space-y-3">
-        <% @available.each do |order| %>
-          <div class="border rounded-lg p-3">
-            <div class="flex justify-between items-start">
-              <div>
-                <p class="font-medium"><%= order.cook.full_name %> → <%= order.customer.full_name %></p>
-                <p class="text-sm text-gray-500"><%= order.delivery_address %></p>
-                <p class="text-sm font-medium"><%= number_to_currency(order.total_amount, unit: "CFA", format: "%n %u") %></p>
+  <div class="card">
+    <div class="card-header">
+      <h2 class="heading-3"><i class="fas fa-box text-green-600"></i> Commandes disponibles</h2>
+    </div>
+    <div class="card-body">
+      <% if @available.any? %>
+        <div class="space-y-3">
+          <% @available.each do |order| %>
+            <div class="border rounded-lg p-3">
+              <div class="flex justify-between items-start">
+                <div>
+                  <p class="font-medium"><%= order.cook.full_name %> → <%= order.customer.full_name %></p>
+                  <p class="text-gray-500 text-sm"><%= order.delivery_address %></p>
+                  <p class="font-medium text-sm"><%= number_to_currency(order.total_amount, unit: "CFA", format: "%n %u") %></p>
+                </div>
+                <a href="/deliveries/<%= order.id %>/take" class="btn btn-sm" style="background-color:#16a34a;color:white;border:none"
+                   data-turbo-method="post">
+                  <i class="fas fa-hand-paper"></i> Prendre
+                </a>
               </div>
-              <a href="/deliveries/<%= order.id %>/take" class="bg-green-600 text-white px-3 py-1 rounded text-sm hover:bg-green-700"
-                 data-turbo-method="post">
-                <i class="fas fa-hand-paper"></i> Prendre
-              </a>
             </div>
-          </div>
-        <% end %>
-      </div>
-    <% else %>
-      <p class="text-gray-500 text-center py-4"><i class="fas fa-inbox"></i> Aucune commande disponible</p>
-    <% end %>
+          <% end %>
+        </div>
+      <% else %>
+        <p class="text-gray-500 text-center py-4"><i class="fas fa-inbox"></i> Aucune commande disponible</p>
+      <% end %>
+    </div>
   </div>
 
-  <div class="bg-white rounded-xl shadow p-6">
-    <h2 class="font-bold text-lg mb-4"><i class="fas fa-truck text-blue-600"></i> Mes livraisons en cours</h2>
-    <% if @my_deliveries.any? %>
-      <div class="space-y-3">
-        <% @my_deliveries.each do |order| %>
-          <div class="border rounded-lg p-3">
-            <div class="flex justify-between items-start">
-              <div>
-                <p class="font-medium"><%= order.cook.full_name %></p>
-                <p class="text-sm text-gray-500"><%= order.delivery_address %></p>
-                <span class="text-xs px-2 py-0.5 rounded-full
-                  <%= 'bg-yellow-100 text-yellow-800' if order.driver_assigned? %>
-                  <%= 'bg-purple-100 text-purple-800' if order.in_delivery? %>
-                  <%= 'bg-green-100 text-green-800' if order.delivered? %>
-                "><%= order.status.humanize %></span>
+  <div class="card">
+    <div class="card-header">
+      <h2 class="heading-3"><i class="fas fa-truck text-blue-600"></i> Mes livraisons en cours</h2>
+    </div>
+    <div class="card-body">
+      <% if @my_deliveries.any? %>
+        <div class="space-y-3">
+          <% @my_deliveries.each do |order| %>
+            <div class="border rounded-lg p-3">
+              <div class="flex justify-between items-start">
+                <div>
+                  <p class="font-medium"><%= order.cook.full_name %></p>
+                  <p class="text-gray-500 text-sm"><%= order.delivery_address %></p>
+                  <span class="badge <%= 'badge-secondary' if order.driver_assigned? %><%= 'badge-primary' if order.in_delivery? %><%= 'badge-secondary' if order.delivered? %>"><%= order.status.humanize %></span>
+                </div>
+                <% if order.driver_assigned? %>
+                  <a href="/orders/<%= order.id %>/accept_delivery" class="btn btn-sm" style="background-color:#9333ea;color:white;border:none">
+                    <i class="fas fa-check-circle"></i> Accepter
+                  </a>
+                <% elsif order.in_delivery? %>
+                  <a href="/orders/<%= order.id %>/mark_delivered" class="btn btn-sm" style="background-color:#16a34a;color:white;border:none">
+                    <i class="fas fa-check-circle"></i> Livrer
+                  </a>
+                <% end %>
               </div>
-              <% if order.driver_assigned? %>
-                <a href="/orders/<%= order.id %>/accept_delivery" class="bg-purple-600 text-white px-3 py-1 rounded text-sm hover:bg-purple-700">
-                  <i class="fas fa-check-circle"></i> Accepter
-                </a>
-              <% elsif order.in_delivery? %>
-                <a href="/orders/<%= order.id %>/mark_delivered" class="bg-green-600 text-white px-3 py-1 rounded text-sm hover:bg-green-700">
-                  <i class="fas fa-check-circle"></i> Livrer
-                </a>
-              <% end %>
             </div>
-          </div>
-        <% end %>
-      </div>
-    <% else %>
-      <p class="text-gray-500 text-center py-4">Aucune livraison en cours</p>
-    <% end %>
+          <% end %>
+        </div>
+      <% else %>
+        <p class="text-gray-500 text-center py-4">Aucune livraison en cours</p>
+      <% end %>
+    </div>
   </div>
 </div>

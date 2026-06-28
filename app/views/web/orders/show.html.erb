@@ -1,39 +1,39 @@
 <div class="max-w-2xl mx-auto">
-  <a href="/orders" class="text-orange-600 hover:underline mb-4 inline-block"><i class="fas fa-arrow-left"></i> Retour</a>
+  <a href="/orders" class="text-primary hover:underline mb-4 inline-block"><i class="fas fa-arrow-left"></i> Retour</a>
 
-  <div class="bg-white rounded-xl shadow-md overflow-hidden">
-    <div class="bg-orange-600 text-white p-6">
+  <div class="card overflow-hidden">
+    <div class="bg-muted p-6">
       <div class="flex justify-between items-start">
         <div>
-          <h1 class="text-xl font-bold">Commande #<%= @order.id %></h1>
-          <p class="text-orange-100 text-sm"><%= l(@order.created_at, format: :long) %></p>
+          <h1 class="heading-3">Commande #<%= @order.id %></h1>
+          <p class="text-gray-500 text-sm"><%= l(@order.created_at, format: :long) %></p>
         </div>
-        <span class="text-xs px-3 py-1 rounded-full bg-white text-orange-600 font-medium"><%= @order.status %></span>
+        <span class="badge bg-white text-primary"><%= @order.status %></span>
       </div>
     </div>
 
-    <div class="p-6 space-y-6">
+    <div class="card-body space-y-6">
       <div class="grid md:grid-cols-2 gap-4">
         <div>
-          <p class="text-sm text-gray-500">Cuisinier</p>
+          <p class="text-gray-500 text-sm">Cuisinier</p>
           <p class="font-medium"><%= @order.cook.full_name %></p>
           <p class="text-sm"><%= @order.cook.phone_number %></p>
         </div>
         <div>
-          <p class="text-sm text-gray-500">Client</p>
+          <p class="text-gray-500 text-sm">Client</p>
           <p class="font-medium"><%= @order.customer.full_name %></p>
           <p class="text-sm"><%= @order.customer.phone_number %></p>
         </div>
       </div>
 
       <div>
-        <p class="text-sm text-gray-500 mb-2">Adresse de livraison</p>
+        <p class="text-gray-500 text-sm mb-1">Adresse de livraison</p>
         <p class="font-medium"><%= @order.delivery_address %></p>
       </div>
 
       <% if @order.delivery_driver %>
         <div>
-          <p class="text-sm text-gray-500">Livreur</p>
+          <p class="text-gray-500 text-sm">Livreur</p>
           <p class="font-medium"><%= @order.delivery_driver.full_name %></p>
           <p class="text-sm"><%= @order.delivery_driver.phone_number %></p>
         </div>
@@ -41,13 +41,13 @@
 
       <% if @order.notes.present? %>
         <div>
-          <p class="text-sm text-gray-500 mb-2">Notes du client</p>
-          <p class="text-gray-700 italic bg-gray-50 p-3 rounded-lg"><%= @order.notes %></p>
+          <p class="text-gray-500 text-sm mb-1">Notes du client</p>
+          <p class="text-foreground italic bg-muted p-3 rounded-lg"><%= @order.notes %></p>
         </div>
       <% end %>
 
       <div>
-        <p class="text-sm text-gray-500 mb-2">Articles</p>
+        <p class="text-gray-500 text-sm mb-2">Articles</p>
         <div class="divide-y">
           <% @order.order_items.each do |oi| %>
             <div class="flex justify-between py-2">
@@ -58,49 +58,49 @@
         </div>
         <div class="flex justify-between pt-3 border-t font-bold text-lg">
           <span>Total</span>
-          <span class="text-orange-600"><%= number_to_currency(@order.total_amount, unit: "CFA", format: "%n %u") %></span>
+          <span class="text-primary"><%= number_to_currency(@order.total_amount, unit: "CFA", format: "%n %u") %></span>
         </div>
       </div>
 
       <div class="flex gap-3 flex-wrap">
         <% if current_user.cook? && @order.cook_id == current_user.id %>
           <% if @order.pending? %>
-            <a href="/orders/<%= @order.id %>/accept" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700">
+            <a href="/orders/<%= @order.id %>/accept" class="btn btn-sm" style="background-color:#16a34a;color:white;border:none">
               <i class="fas fa-check"></i> Accepter
             </a>
-            <a href="/orders/<%= @order.id %>/cancel" class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700"
+            <a href="/orders/<%= @order.id %>/cancel" class="btn btn-destructive btn-sm"
                data-confirm="Annuler cette commande ?">
               <i class="fas fa-times"></i> Refuser
             </a>
           <% elsif @order.accepted? %>
-            <a href="/orders/<%= @order.id %>/assign" class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700">
+            <a href="/orders/<%= @order.id %>/assign" class="btn btn-sm" style="background-color:#9333ea;color:white;border:none">
               <i class="fas fa-truck"></i> Assigner un livreur
             </a>
           <% elsif @order.driver_assigned? %>
-            <span class="bg-yellow-100 text-yellow-800 px-4 py-2 rounded-lg font-medium text-sm">
+            <span class="badge badge-secondary py-2 px-3">
               <i class="fas fa-clock"></i> En attente d'acceptation du livreur
             </span>
           <% elsif @order.delivered? %>
-            <a href="/orders/<%= @order.id %>/complete" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700">
+            <a href="/orders/<%= @order.id %>/complete" class="btn btn-sm" style="background-color:#16a34a;color:white;border:none">
               <i class="fas fa-check-double"></i> Terminer
             </a>
-            <a href="/orders/<%= @order.id %>/confirm_reception" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+            <a href="/orders/<%= @order.id %>/confirm_reception" class="btn btn-sm" style="background-color:#2563eb;color:white;border:none">
               <i class="fas fa-handshake"></i> Confirmer réception
             </a>
           <% end %>
         <% end %>
         <% if current_user.delivery_driver? && @order.delivery_driver_id == current_user.id && @order.driver_assigned? %>
-          <a href="/orders/<%= @order.id %>/accept_delivery" class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700">
+          <a href="/orders/<%= @order.id %>/accept_delivery" class="btn btn-sm" style="background-color:#9333ea;color:white;border:none">
             <i class="fas fa-check-circle"></i> Accepter la mission
           </a>
         <% end %>
         <% if current_user.delivery_driver? && @order.delivery_driver_id == current_user.id && @order.in_delivery? %>
-          <a href="/orders/<%= @order.id %>/mark_delivered" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700">
+          <a href="/orders/<%= @order.id %>/mark_delivered" class="btn btn-sm" style="background-color:#16a34a;color:white;border:none">
             <i class="fas fa-check-circle"></i> Marquer livré
           </a>
         <% end %>
         <% if current_user.client? && @order.customer_id == current_user.id && @order.pending? %>
-          <a href="/orders/<%= @order.id %>/cancel" class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700"
+          <a href="/orders/<%= @order.id %>/cancel" class="btn btn-destructive btn-sm"
              data-confirm="Annuler cette commande ?">
             <i class="fas fa-times"></i> Annuler
           </a>

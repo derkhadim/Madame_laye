@@ -1,24 +1,27 @@
-<div class="max-w-lg mx-auto bg-white rounded-xl shadow-md p-8">
-  <h1 class="text-2xl font-bold mb-6"><i class="fas fa-truck text-orange-600"></i> Assigner un livreur</h1>
-
-  <div class="mb-4 p-4 bg-gray-50 rounded-lg">
-    <p class="text-sm text-gray-500">Commande #<%= @order.id %></p>
-    <p class="font-medium"><%= @order.customer.full_name %></p>
-    <p class="text-sm"><%= @order.delivery_address %></p>
+<div class="max-w-lg mx-auto card p-6 md:p-8">
+  <div class="card-header">
+    <h1 class="heading-2"><i class="fas fa-truck text-primary"></i> Assigner un livreur</h1>
   </div>
-
-  <form action="/orders/<%= @order.id %>/assign_driver" method="post" class="space-y-4">
-    <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
-    <div>
-      <label class="block text-sm font-medium text-gray-700 mb-1">Choisir un livreur</label>
-      <select name="driver_id" required class="w-full border rounded-lg px-3 py-2">
-        <% @drivers.each do |d| %>
-          <option value="<%= d.id %>"><%= d.full_name %> — <%= d.phone_number %></option>
-        <% end %>
-      </select>
+  <div class="card-body space-y-4">
+    <div class="bg-muted p-4 rounded-lg">
+      <p class="text-gray-500 text-sm">Commande #<%= @order.id %></p>
+      <p class="font-medium"><%= @order.customer.full_name %></p>
+      <p class="text-sm"><%= @order.delivery_address %></p>
     </div>
-    <button type="submit" class="w-full bg-purple-600 text-white py-2 rounded-lg hover:bg-purple-700 font-medium">
-      <i class="fas fa-check"></i> Assigner
-    </button>
-  </form>
+
+    <form action="/orders/<%= @order.id %>/assign_driver" method="post" class="space-y-4">
+      <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+      <div>
+        <label class="label">Choisir un livreur</label>
+        <select name="driver_id" required class="select">
+          <% @drivers.each do |d| %>
+            <option value="<%= d.id %>"><%= d.full_name %> — <%= d.phone_number %></option>
+          <% end %>
+        </select>
+      </div>
+      <button type="submit" class="btn w-full" style="background-color:#9333ea;color:white;border:none">
+        <i class="fas fa-check"></i> Assigner
+      </button>
+    </form>
+  </div>
 </div>

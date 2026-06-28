@@ -1,66 +1,74 @@
 <div class="grid grid-cols-1 md:grid-cols-6 gap-6 mb-8">
-  <div class="bg-white rounded-xl shadow p-6 text-center">
-    <p class="text-3xl font-bold text-orange-600"><%= @total_cooks %></p>
-    <p class="text-sm text-gray-500">Cuisiniers</p>
+  <div class="card p-6 md:p-8 text-center">
+    <p class="heading-2 text-primary"><%= @total_cooks %></p>
+    <p class="text-gray-500 text-sm">Cuisiniers</p>
   </div>
-  <div class="bg-white rounded-xl shadow p-6 text-center">
-    <p class="text-3xl font-bold text-blue-600"><%= @total_clients %></p>
-    <p class="text-sm text-gray-500">Clients</p>
+  <div class="card p-6 md:p-8 text-center">
+    <p class="heading-2" style="color:#2563eb"><%= @total_clients %></p>
+    <p class="text-gray-500 text-sm">Clients</p>
   </div>
-  <div class="bg-white rounded-xl shadow p-6 text-center">
-    <p class="text-3xl font-bold text-green-600"><%= @total_drivers %></p>
-    <p class="text-sm text-gray-500">Livreurs</p>
+  <div class="card p-6 md:p-8 text-center">
+    <p class="heading-2" style="color:#16a34a"><%= @total_drivers %></p>
+    <p class="text-gray-500 text-sm">Livreurs</p>
   </div>
-  <div class="bg-white rounded-xl shadow p-6 text-center">
-    <p class="text-3xl font-bold text-purple-600"><%= @total_orders %></p>
-    <p class="text-sm text-gray-500">Commandes</p>
+  <div class="card p-6 md:p-8 text-center">
+    <p class="heading-2" style="color:#9333ea"><%= @total_orders %></p>
+    <p class="text-gray-500 text-sm">Commandes</p>
   </div>
-  <div class="bg-white rounded-xl shadow p-6 text-center">
-    <p class="text-3xl font-bold text-yellow-600"><%= @pending_orders %></p>
-    <p class="text-sm text-gray-500">En attente</p>
+  <div class="card p-6 md:p-8 text-center">
+    <p class="heading-2" style="color:#ca8a04"><%= @pending_orders %></p>
+    <p class="text-gray-500 text-sm">En attente</p>
   </div>
-  <div class="bg-white rounded-xl shadow p-6 text-center">
-    <p class="text-3xl font-bold text-red-600"><%= @pending_withdrawals %></p>
-    <p class="text-sm text-gray-500">
+  <div class="card p-6 md:p-8 text-center">
+    <p class="heading-2 text-destructive"><%= @pending_withdrawals %></p>
+    <p class="text-gray-500 text-sm">
       <a href="/admin/withdrawals" class="hover:underline">Retraits <i class="fas fa-external-link-alt text-xs"></i></a>
     </p>
   </div>
 </div>
 
 <div class="grid md:grid-cols-2 gap-6">
-  <div class="bg-white rounded-xl shadow p-6">
-    <h2 class="font-bold text-lg mb-4"><i class="fas fa-users text-orange-600"></i> Utilisateurs récents</h2>
-    <div class="overflow-x-auto">
-      <table class="w-full text-sm">
-        <thead><tr class="text-left border-b"><th class="pb-2">Nom</th><th class="pb-2">Téléphone</th><th class="pb-2">Rôle</th></tr></thead>
-        <tbody>
-          <% @users.each do |u| %>
-            <tr class="border-b hover:bg-gray-50">
-              <td class="py-2"><%= u.full_name %></td>
-              <td class="py-2"><%= u.phone_number %></td>
-              <td class="py-2"><span class="text-xs px-2 py-0.5 rounded-full bg-gray-100"><%= u.role %></span></td>
-            </tr>
-          <% end %>
-        </tbody>
-      </table>
+  <div class="card">
+    <div class="card-header">
+      <h2 class="heading-3"><i class="fas fa-users text-primary"></i> Utilisateurs récents</h2>
+    </div>
+    <div class="card-body p-0">
+      <div class="table-container">
+        <table>
+          <thead><tr><th>Nom</th><th>Téléphone</th><th>Rôle</th></tr></thead>
+          <tbody>
+            <% @users.each do |u| %>
+              <tr>
+                <td><%= u.full_name %></td>
+                <td><%= u.phone_number %></td>
+                <td><span class="badge badge-secondary"><%= u.role %></span></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
-  <div class="bg-white rounded-xl shadow p-6">
-    <h2 class="font-bold text-lg mb-4"><i class="fas fa-shopping-cart text-orange-600"></i> Dernières commandes</h2>
-    <div class="overflow-x-auto">
-      <table class="w-full text-sm">
-        <thead><tr class="text-left border-b"><th class="pb-2">#</th><th class="pb-2">Client</th><th class="pb-2">Total</th><th class="pb-2">Statut</th></tr></thead>
-        <tbody>
-          <% @recent_orders.each do |o| %>
-            <tr class="border-b hover:bg-gray-50">
-              <td class="py-2">#<%= o.id %></td>
-              <td class="py-2"><%= o.customer.full_name %></td>
-              <td class="py-2"><%= number_to_currency(o.total_amount, unit: "CFA", format: "%n %u") %></td>
-              <td class="py-2"><span class="text-xs px-2 py-0.5 rounded-full bg-gray-100"><%= o.status %></span></td>
-            </tr>
-          <% end %>
-        </tbody>
-      </table>
+  <div class="card">
+    <div class="card-header">
+      <h2 class="heading-3"><i class="fas fa-shopping-cart text-primary"></i> Dernières commandes</h2>
+    </div>
+    <div class="card-body p-0">
+      <div class="table-container">
+        <table>
+          <thead><tr><th>#</th><th>Client</th><th>Total</th><th>Statut</th></tr></thead>
+          <tbody>
+            <% @recent_orders.each do |o| %>
+              <tr>
+                <td>#<%= o.id %></td>
+                <td><%= o.customer.full_name %></td>
+                <td><%= number_to_currency(o.total_amount, unit: "CFA", format: "%n %u") %></td>
+                <td><span class="badge badge-secondary"><%= o.status %></span></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 </div>

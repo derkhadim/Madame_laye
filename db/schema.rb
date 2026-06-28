@@ -87,6 +87,13 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_23_181801) do
     t.index ["order_id"], name: "index_payments_on_order_id"
   end
 
+  create_table "quartiers", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "nom", null: false
+    t.datetime "updated_at", null: false
+    t.index ["nom"], name: "index_quartiers_on_nom", unique: true
+  end
+
   create_table "reviews", force: :cascade do |t|
     t.text "comment"
     t.datetime "created_at", null: false

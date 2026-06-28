@@ -1,22 +1,26 @@
-<div class="max-w-md mx-auto mt-10 bg-white rounded-xl shadow-md p-8">
-  <h1 class="text-2xl font-bold text-center mb-6"><i class="fas fa-sign-in-alt text-orange-600"></i> Connexion</h1>
-  <form method="post" action="/login" class="space-y-4">
-    <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
-    <div>
-      <label class="block text-sm font-medium text-gray-700 mb-1">Numéro de téléphone</label>
-      <input type="tel" name="phone_number" required placeholder="221771234567"
-             class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-orange-500 focus:border-transparent">
-    </div>
-    <div>
-      <label class="block text-sm font-medium text-gray-700 mb-1">Mot de passe</label>
-      <input type="password" name="password" required
-             class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-orange-500 focus:border-transparent">
-    </div>
-    <button type="submit" class="w-full bg-orange-600 text-white py-2 rounded-lg hover:bg-orange-700 font-medium">
-      <i class="fas fa-sign-in-alt"></i> Se connecter
-    </button>
-  </form>
-  <p class="text-center mt-4 text-sm text-gray-600">
-    Pas encore de compte ? <a href="/signup" class="text-orange-600 hover:underline">S'inscrire</a>
-  </p>
+<div class="max-w-md mx-auto mt-10 card p-6 md:p-8">
+  <div class="card-header text-center pb-4">
+    <h1 class="heading-2"><i class="fas fa-sign-in-alt text-primary"></i> Connexion</h1>
+  </div>
+  <div class="card-body">
+    <form method="post" action="/login" class="space-y-4">
+      <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+      <div>
+        <label class="label">Numéro de téléphone</label>
+        <input type="tel" name="phone_number" required placeholder="221771234567" class="input">
+      </div>
+      <div>
+        <label class="label">Mot de passe</label>
+        <input type="password" name="password" required class="input">
+      </div>
+      <button type="submit" class="btn btn-primary w-full">
+        <i class="fas fa-sign-in-alt"></i> Se connecter
+      </button>
+    </form>
+  </div>
+  <div class="card-footer text-center">
+    <p class="text-gray-500 text-sm">
+      Pas encore de compte ? <a href="/signup" class="text-primary hover:underline">S'inscrire</a>
+    </p>
+  </div>
 </div>

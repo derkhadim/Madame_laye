@@ -2,5 +2,5 @@ services:
   - type: web
     name: madame-laye
     runtime: ruby
-    buildCommand: bundle install && bundle exec bootsnap precompile --gemfile
+    buildCommand: bundle install && bundle exec bootsnap precompile --gemfile && bundle exec rails tailwindcss:build
     startCommand: bin/rails db:prepare && bin/rails server -p $PORT -b 0.0.0.0

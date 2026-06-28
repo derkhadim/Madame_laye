@@ -1,45 +1,42 @@
 <div class="max-w-4xl mx-auto">
-  <a href="/menus/search" class="text-orange-600 hover:underline mb-4 inline-block"><i class="fas fa-arrow-left"></i> Retour à la recherche</a>
+  <a href="/menus/search" class="text-primary hover:underline mb-4 inline-block"><i class="fas fa-arrow-left"></i> Retour à la recherche</a>
 
-  <!-- En-tête du cuisinier -->
-  <div class="bg-white rounded-xl shadow-md overflow-hidden mb-6">
-    <div class="bg-gradient-to-r from-orange-500 to-orange-700 p-6 text-white">
+  <div class="card overflow-hidden mb-6">
+    <div class="bg-muted p-6">
       <div class="flex items-center gap-4">
-        <div class="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center text-2xl font-bold">
+        <div class="w-16 h-16 bg-muted rounded-full flex items-center justify-center text-2xl font-bold">
           <%= @cook.full_name.split.map(&:first).join %>
         </div>
         <div>
-          <h1 class="text-2xl font-bold"><%= @cook.full_name %></h1>
-          <p class="text-orange-100"><i class="fas fa-map-marker-alt"></i> <%= @cook.address %></p>
+          <h1 class="heading-2"><%= @cook.full_name %></h1>
+          <p class="text-gray-500"><i class="fas fa-map-marker-alt"></i> <%= @cook.address %></p>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Plats du jour avec commande -->
-  <div class="bg-white rounded-xl shadow-md overflow-hidden mb-6">
-    <div class="p-4 border-b bg-gray-50">
-      <h2 class="text-lg font-bold"><i class="fas fa-utensils text-orange-600"></i> Aujourd'hui — <%= Date.current.strftime('%A').capitalize %></h2>
+  <div class="card overflow-hidden mb-6">
+    <div class="card-header bg-muted/50">
+      <h2 class="heading-3"><i class="fas fa-utensils text-primary"></i> Aujourd'hui — <%= Date.current.strftime('%A').capitalize %></h2>
     </div>
-    <div class="p-4 grid md:grid-cols-2 gap-4">
+    <div class="card-body grid md:grid-cols-2 gap-4">
       <% today = Date.current.strftime("%A").downcase %>
       <% lunch = @weekly_meals.select { |m| m.day_of_week == today && m.lunch? && m.available? }.first %>
       <% dinner = @weekly_meals.select { |m| m.day_of_week == today && m.dinner? && m.available? }.first %>
 
       <% if lunch %>
-        <div class="border rounded-lg p-4 hover:shadow transition">
+        <div class="border rounded-lg p-4">
           <div class="flex justify-between items-start mb-2">
             <div>
               <h3 class="font-bold"><%= lunch.name %></h3>
-              <p class="text-xs text-gray-500"><%= lunch.description&.truncate(60) %></p>
+              <p class="text-gray-500 text-xs"><%= lunch.description&.truncate(60) %></p>
             </div>
-            <span class="text-xs bg-yellow-100 text-yellow-800 px-2 py-0.5 rounded-full font-medium">Déjeuner</span>
+            <span class="badge badge-secondary">Déjeuner</span>
           </div>
           <div class="flex justify-between items-center mt-3">
-            <span class="text-lg font-bold text-orange-600"><%= number_to_currency(lunch.price, unit: "CFA", format: "%n %u") %></span>
+            <span class="text-lg font-bold text-primary"><%= number_to_currency(lunch.price, unit: "CFA", format: "%n %u") %></span>
             <% if current_user&.client? %>
-              <a href="/clients/<%= @cook.id %>/order/meal/<%= lunch.id %>"
-                 class="bg-orange-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-orange-700">
+              <a href="/clients/<%= @cook.id %>/order/meal/<%= lunch.id %>" class="btn btn-primary btn-sm">
                 <i class="fas fa-shopping-cart"></i> Commander
               </a>
             <% end %>
@@ -48,19 +45,18 @@
       <% end %>
 
       <% if dinner %>
-        <div class="border rounded-lg p-4 hover:shadow transition">
+        <div class="border rounded-lg p-4">
           <div class="flex justify-between items-start mb-2">
             <div>
               <h3 class="font-bold"><%= dinner.name %></h3>
-              <p class="text-xs text-gray-500"><%= dinner.description&.truncate(60) %></p>
+              <p class="text-gray-500 text-xs"><%= dinner.description&.truncate(60) %></p>
             </div>
-            <span class="text-xs bg-blue-100 text-blue-800 px-2 py-0.5 rounded-full font-medium">Dîner</span>
+            <span class="badge badge-primary">Dîner</span>
           </div>
           <div class="flex justify-between items-center mt-3">
-            <span class="text-lg font-bold text-orange-600"><%= number_to_currency(dinner.price, unit: "CFA", format: "%n %u") %></span>
+            <span class="text-lg font-bold text-primary"><%= number_to_currency(dinner.price, unit: "CFA", format: "%n %u") %></span>
             <% if current_user&.client? %>
-              <a href="/clients/<%= @cook.id %>/order/meal/<%= dinner.id %>"
-                 class="bg-orange-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-orange-700">
+              <a href="/clients/<%= @cook.id %>/order/meal/<%= dinner.id %>" class="btn btn-primary btn-sm">
                 <i class="fas fa-shopping-cart"></i> Commander
               </a>
             <% end %>
@@ -69,53 +65,48 @@
       <% end %>
 
       <% unless lunch || dinner %>
-        <div class="md:col-span-2 text-center py-6 bg-gray-50 rounded-lg">
-          <i class="fas fa-utensils text-3xl text-gray-300 mb-2"></i>
+        <div class="md:col-span-2 text-center py-6 bg-muted rounded-lg">
+          <i class="fas fa-utensils text-3xl text-gray-500 mb-2"></i>
           <p class="text-gray-500">Aucun plat disponible aujourd'hui</p>
         </div>
       <% end %>
     </div>
   </div>
 
-  <!-- Plats de la semaine (consultation) -->
-  <div class="bg-white rounded-xl shadow-md overflow-hidden mb-6">
-    <div class="p-4 border-b bg-gray-50">
-      <h2 class="text-lg font-bold"><i class="fas fa-calendar-week text-orange-600"></i> Menu de la semaine</h2>
+  <div class="card overflow-hidden mb-6">
+    <div class="card-header bg-muted/50">
+      <h2 class="heading-3"><i class="fas fa-calendar-week text-primary"></i> Menu de la semaine</h2>
     </div>
-    <div class="overflow-x-auto">
-      <table class="w-full text-sm">
+    <div class="table-container">
+      <table>
         <thead>
-          <tr class="bg-gray-100 text-left">
-            <th class="p-3">Jour</th>
-            <th class="p-3">Déjeuner</th>
-            <th class="p-3">Dîner</th>
-          </tr>
+          <tr><th>Jour</th><th>Déjeuner</th><th>Dîner</th></tr>
         </thead>
         <tbody>
           <% %w[monday tuesday wednesday thursday friday saturday sunday].each do |day| %>
             <% l = @weekly_meals.select { |m| m.day_of_week == day && m.lunch? }.first %>
             <% d = @weekly_meals.select { |m| m.day_of_week == day && m.dinner? }.first %>
-            <tr class="border-b hover:bg-gray-50 <%= day == today ? 'bg-orange-50' : '' %>">
-              <td class="p-3 font-medium">
+            <tr class="<%= day == today ? 'bg-muted' : '' %>">
+              <td class="font-medium">
                 <%= day.capitalize %>
                 <% if day == today %>
-                  <span class="text-xs bg-orange-600 text-white px-1.5 py-0.5 rounded ml-1">Aujourd'hui</span>
+                  <span class="badge badge-primary text-xs ml-1">Aujourd'hui</span>
                 <% end %>
               </td>
-              <td class="p-3">
+              <td>
                 <% if l&.available? %>
                   <span class="font-medium"><%= l.name %></span>
-                  <p class="text-xs text-orange-600"><%= number_to_currency(l.price, unit: "CFA", format: "%n %u") %></p>
+                  <p class="text-xs text-primary"><%= number_to_currency(l.price, unit: "CFA", format: "%n %u") %></p>
                 <% else %>
-                  <span class="text-gray-400">—</span>
+                  <span class="text-gray-500">—</span>
                 <% end %>
               </td>
-              <td class="p-3">
+              <td>
                 <% if d&.available? %>
                   <span class="font-medium"><%= d.name %></span>
-                  <p class="text-xs text-orange-600"><%= number_to_currency(d.price, unit: "CFA", format: "%n %u") %></p>
+                  <p class="text-xs text-primary"><%= number_to_currency(d.price, unit: "CFA", format: "%n %u") %></p>
                 <% else %>
-                  <span class="text-gray-400">—</span>
+                  <span class="text-gray-500">—</span>
                 <% end %>
               </td>
             </tr>
@@ -125,30 +116,24 @@
     </div>
   </div>
 
-  <!-- Produits journaliers -->
-  <div class="bg-white rounded-xl shadow-md overflow-hidden mb-6">
-    <div class="p-4 border-b bg-gray-50">
-      <h2 class="text-lg font-bold"><i class="fas fa-box text-orange-600"></i> Produits du jour</h2>
+  <div class="card overflow-hidden mb-6">
+    <div class="card-header bg-muted/50">
+      <h2 class="heading-3"><i class="fas fa-box text-primary"></i> Produits du jour</h2>
     </div>
     <% if @daily_products.any? %>
-      <div class="p-4 grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div class="card-body grid grid-cols-1 md:grid-cols-3 gap-4">
         <% @daily_products.each do |p| %>
-          <div class="border rounded-lg p-3 hover:shadow transition">
+          <div class="border rounded-lg p-3">
             <div class="flex justify-between items-start mb-2">
-              <span class="text-xs px-2 py-0.5 rounded-full
-                <%= 'bg-pink-100 text-pink-800' if p.petit_fours? %>
-                <%= 'bg-green-100 text-green-800' if p.plat_sale? %>
-                <%= 'bg-yellow-100 text-yellow-800' if p.gateaux? %>
-              "><%= p.category.humanize %></span>
-              <span class="text-xs text-gray-400"><%= p.quantity_available %> dispo</span>
+              <span class="badge <%= 'badge-secondary' if p.petit_fours? %><%= 'badge-primary' if p.plat_sale? %><%= 'badge-secondary' if p.gateaux? %>"><%= p.category.humanize %></span>
+              <span class="text-xs text-gray-500"><%= p.quantity_available %> dispo</span>
             </div>
             <h4 class="font-medium"><%= p.name %></h4>
-            <p class="text-xs text-gray-500 mb-2"><%= p.description&.truncate(60) %></p>
+            <p class="text-gray-500 text-xs mb-2"><%= p.description&.truncate(60) %></p>
             <div class="flex justify-between items-center mt-2">
-              <span class="text-orange-600 font-bold"><%= number_to_currency(p.price, unit: "CFA", format: "%n %u") %></span>
+              <span class="text-primary font-bold"><%= number_to_currency(p.price, unit: "CFA", format: "%n %u") %></span>
               <% if current_user&.client? %>
-                <a href="/clients/<%= @cook.id %>/order/product/<%= p.id %>"
-                   class="bg-orange-600 text-white px-3 py-1.5 rounded text-sm hover:bg-orange-700">
+                <a href="/clients/<%= @cook.id %>/order/product/<%= p.id %>" class="btn btn-primary btn-sm">
                   <i class="fas fa-shopping-cart"></i> Commander
                 </a>
               <% end %>

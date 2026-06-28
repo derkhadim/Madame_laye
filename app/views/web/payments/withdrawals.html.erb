@@ -1,41 +1,30 @@
 <div class="max-w-2xl mx-auto">
-  <a href="/payments/balance" class="text-orange-600 hover:underline mb-4 inline-block"><i class="fas fa-arrow-left"></i> Retour au solde</a>
+  <a href="/payments/balance" class="text-primary hover:underline mb-4 inline-block"><i class="fas fa-arrow-left"></i> Retour au solde</a>
 
-  <div class="bg-white rounded-xl shadow-md overflow-hidden">
-    <div class="bg-gradient-to-r from-orange-500 to-orange-700 p-6 text-white">
-      <h1 class="text-xl font-bold"><i class="fas fa-history"></i> Historique des retraits</h1>
+  <div class="card overflow-hidden">
+    <div class="bg-muted p-6">
+      <h1 class="heading-3"><i class="fas fa-history"></i> Historique des retraits</h1>
     </div>
 
     <% if @withdrawals.any? %>
-      <div class="overflow-x-auto">
-        <table class="w-full text-sm">
+      <div class="table-container">
+        <table>
           <thead>
-            <tr class="bg-gray-100 text-left">
-              <th class="p-3">Date</th>
-              <th class="p-3">Montant</th>
-              <th class="p-3">Statut</th>
-              <th class="p-3">Traité le</th>
-            </tr>
+            <tr><th>Date</th><th>Montant</th><th>Statut</th><th>Traité le</th></tr>
           </thead>
           <tbody>
             <% @withdrawals.each do |w| %>
-              <tr class="border-b hover:bg-gray-50">
-                <td class="p-3"><%= l(w.created_at, format: :short) %></td>
-                <td class="p-3 font-bold"><%= number_to_currency(w.amount, unit: "CFA", format: "%n %u") %></td>
-                <td class="p-3">
+              <tr>
+                <td><%= l(w.created_at, format: :short) %></td>
+                <td class="font-bold"><%= number_to_currency(w.amount, unit: "CFA", format: "%n %u") %></td>
+                <td>
                   <% if w.pending? %>
-                    <span class="text-xs px-2 py-1 rounded-full bg-yellow-100 text-yellow-800">
-                      <i class="fas fa-clock"></i> En cours de traitement
-                    </span>
+                    <span class="badge" style="background-color:#fef3c7;color:#854d0e"><i class="fas fa-clock"></i> En cours de traitement</span>
                   <% else %>
-                    <span class="text-xs px-2 py-1 rounded-full bg-green-100 text-green-800">
-                      <i class="fas fa-check-circle"></i> Validé
-                    </span>
+                    <span class="badge" style="background-color:#dcfce7;color:#166534"><i class="fas fa-check-circle"></i> Validé</span>
                   <% end %>
                 </td>
-                <td class="p-3">
-                  <%= w.processed_at ? l(w.processed_at, format: :short) : "—" %>
-                </td>
+                <td><%= w.processed_at ? l(w.processed_at, format: :short) : "—" %></td>
               </tr>
             <% end %>
           </tbody>
@@ -43,9 +32,9 @@
       </div>
     <% else %>
       <div class="text-center py-12">
-        <i class="fas fa-receipt text-4xl text-gray-300 mb-3"></i>
+        <i class="fas fa-receipt text-4xl text-gray-500 mb-3"></i>
         <p class="text-gray-500">Aucun retrait pour le moment</p>
-        <a href="/payments/balance" class="text-orange-600 hover:underline text-sm">Effectuer un retrait</a>
+        <a href="/payments/balance" class="text-primary hover:underline text-sm">Effectuer un retrait</a>
       </div>
     <% end %>
   </div>

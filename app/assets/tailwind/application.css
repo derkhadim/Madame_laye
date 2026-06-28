@@ -1,0 +1,300 @@
+@import "tailwindcss";
+
+@theme {
+  --color-ember-orange: #ff5406;
+  --color-verdant-green: #00b33f;
+  --color-signal-red-orange: #ff3400;
+  --color-sky-blue: #00a9dd;
+  --color-mist-blue: #72a2c5;
+  --color-sunset-orange: #ff6d00;
+  --color-amber: #945300;
+  --color-alert-red: #ff001e;
+  --color-plum: #bd4be5;
+  --color-iris: #5856de;
+  --color-electric-blue: #0099f9;
+  --color-graphite: #2f2f2f;
+  --color-charcoal: #000000;
+  --color-fog: #f5f5f5;
+  --color-paper-white: #ffffff;
+  --color-primary: #ff5406;
+  --color-primary-foreground: #ffffff;
+  --color-destructive: #ff001e;
+  --color-muted: #f5f5f5;
+  --color-border: #e5e5e5;
+
+  --font-aquawax-pro: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+
+  --text-tiny: 12px;
+  --leading-tiny: 1.2;
+  --text-caption: 14px;
+  --leading-caption: 1.2;
+  --text-body-sm: 16px;
+  --leading-body-sm: 1.4;
+  --text-subheading: 20px;
+  --leading-subheading: 1.8;
+  --text-heading-sm: 22px;
+  --leading-heading-sm: 1.2;
+  --text-heading: 30px;
+  --leading-heading: 1.2;
+  --text-display: 60px;
+  --leading-display: 1.2;
+
+  --spacing-8: 8px;
+  --spacing-24: 24px;
+  --spacing-32: 32px;
+  --spacing-40: 40px;
+  --spacing-48: 48px;
+  --spacing-56: 56px;
+  --spacing-64: 64px;
+  --spacing-96: 96px;
+  --spacing-unit: 8px;
+
+  --radius-3xl: 26px;
+}
+
+@layer base {
+  body {
+    background-color: #ffffff;
+    color: #2f2f2f;
+    font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+
+  ::selection {
+    background-color: #ff5406;
+    color: #ffffff;
+  }
+}
+
+@layer components {
+  .card {
+    background-color: #ffffff;
+    border-radius: 26px;
+    border: 1px solid #e5e5e5;
+  }
+
+  .card-header {
+    padding: 32px 32px 0;
+  }
+
+  .card-body {
+    padding: 24px 32px;
+  }
+
+  .card-footer {
+    padding: 0 32px 32px;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 26px;
+    font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    padding: 12px 20px;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: opacity 0.15s;
+    gap: 8px;
+  }
+
+  .btn:hover {
+    opacity: 0.85;
+  }
+
+  .btn:disabled {
+    opacity: 0.4;
+    pointer-events: none;
+  }
+
+  .btn-primary {
+    background-color: #ff5406;
+    color: #ffffff;
+  }
+
+  .btn-secondary {
+    background-color: transparent;
+    color: #2f2f2f;
+    border: 1px solid #e5e5e5;
+  }
+
+  .btn-secondary:hover {
+    background-color: #f5f5f5;
+  }
+
+  .btn-destructive {
+    background-color: #ff001e;
+    color: #ffffff;
+  }
+
+  .btn-ghost {
+    background-color: transparent;
+    color: #2f2f2f;
+    border: none;
+  }
+
+  .btn-ghost:hover {
+    color: #ff5406;
+  }
+
+  .btn-sm {
+    padding: 8px 16px;
+    font-size: 13px;
+  }
+
+  .btn-lg {
+    padding: 14px 28px;
+    font-size: 16px;
+  }
+
+  .input {
+    display: flex;
+    height: 48px;
+    width: 100%;
+    border-radius: 26px;
+    border: 1px solid #e5e5e5;
+    background-color: #ffffff;
+    color: #2f2f2f;
+    padding: 12px 18px;
+    font-size: 14px;
+  }
+
+  .input::placeholder {
+    color: #9ca3af;
+  }
+
+  .input:focus {
+    outline: none;
+    border-color: #ff5406;
+    box-shadow: 0 0 0 3px rgba(255, 84, 6, 0.1);
+  }
+
+  .input:disabled {
+    opacity: 0.5;
+  }
+
+  .label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: #2f2f2f;
+    margin-bottom: 8px;
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    border-radius: 26px;
+    padding: 4px 14px;
+    font-size: 12px;
+    font-weight: 600;
+    border: 1px solid #e5e5e5;
+  }
+
+  .badge-primary {
+    background-color: #ff5406;
+    color: #ffffff;
+    border-color: #ff5406;
+  }
+
+  .badge-secondary {
+    background-color: #f5f5f5;
+    color: #2f2f2f;
+    border-color: #e5e5e5;
+  }
+
+  .badge-destructive {
+    background-color: #ff001e;
+    color: #ffffff;
+    border-color: #ff001e;
+  }
+
+  .badge-outline {
+    background-color: transparent;
+    color: #2f2f2f;
+    border-color: #e5e5e5;
+  }
+
+  .select {
+    display: flex;
+    height: 48px;
+    width: 100%;
+    border-radius: 26px;
+    border: 1px solid #e5e5e5;
+    background-color: #ffffff;
+    color: #2f2f2f;
+    padding: 12px 40px 12px 18px;
+    font-size: 14px;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%232f2f2f' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+    background-position: right 14px center;
+    background-repeat: no-repeat;
+    background-size: 1.25em;
+  }
+
+  .select:focus {
+    outline: none;
+    border-color: #ff5406;
+    box-shadow: 0 0 0 3px rgba(255, 84, 6, 0.1);
+  }
+
+  .table-container {
+    border-radius: 26px;
+    border: 1px solid #e5e5e5;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .table-container table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .table-container th {
+    background-color: #f5f5f5;
+    padding: 14px 20px;
+    text-align: left;
+    font-size: 13px;
+    font-weight: 600;
+    color: #2f2f2f;
+    border-bottom: 1px solid #e5e5e5;
+  }
+
+  .table-container td {
+    padding: 14px 20px;
+    font-size: 14px;
+    border-bottom: 1px solid #e5e5e5;
+    color: #2f2f2f;
+  }
+
+  .table-container tr:last-child td {
+    border-bottom: none;
+  }
+
+  .table-container tr:hover td {
+    background-color: #f5f5f5;
+  }
+
+  .heading-1 {
+    font-size: 30px;
+    font-weight: 700;
+    line-height: 1.2;
+    color: #2f2f2f;
+  }
+
+  .heading-2 {
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1.2;
+    color: #2f2f2f;
+  }
+
+  .heading-3 {
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1.2;
+    color: #2f2f2f;
+  }
+
+}

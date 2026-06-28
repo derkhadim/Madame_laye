@@ -1,77 +1,95 @@
-<div class="max-w-lg mx-auto mt-10 bg-white rounded-xl shadow-md p-8">
-  <h1 class="text-2xl font-bold text-center mb-6"><i class="fas fa-user-plus text-orange-600"></i> Inscription</h1>
+<div class="max-w-lg mx-auto mt-10 card p-6 md:p-8">
+  <div class="card-header text-center pb-4">
+    <h1 class="heading-2"><i class="fas fa-user-plus text-primary"></i> Inscription</h1>
+  </div>
 
-  <% if @errors %>
-    <div class="bg-red-100 text-red-700 p-3 rounded-lg mb-4">
-      <% @errors.each do |err| %>
-        <p class="text-sm"><i class="fas fa-exclamation-circle"></i> <%= err %></p>
-      <% end %>
-    </div>
-  <% end %>
-
-  <form method="post" action="/signup" class="space-y-4">
-    <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
-
-    <div class="grid grid-cols-2 gap-4">
-      <div>
-        <label class="block text-sm font-medium text-gray-700 mb-1">Prénom</label>
-        <input type="text" name="first_name" required
-               class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-orange-500 focus:border-transparent">
+  <div class="card-body">
+    <% if @errors %>
+      <div class="bg-destructive/10 text-destructive text-sm p-3 rounded-lg mb-4 flex items-start gap-2">
+        <i class="fas fa-exclamation-circle mt-0.5"></i>
+        <div><% @errors.each do |err| %><p><%= err %></p><% end %></div>
       </div>
+    <% end %>
+
+    <form method="post" action="/signup" class="space-y-4">
+      <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+
       <div>
-        <label class="block text-sm font-medium text-gray-700 mb-1">Nom</label>
-        <input type="text" name="last_name" required
-               class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-orange-500 focus:border-transparent">
+        <label class="label">Je suis</label>
+        <select name="role" required class="select">
+          <option value="client">Client — Je veux commander</option>
+          <option value="cook">Cuisinier — Je veux vendre mes plats</option>
+          <option value="delivery_driver">Livreur — Je veux livrer</option>
+        </select>
       </div>
-    </div>
 
-    <div>
-      <label class="block text-sm font-medium text-gray-700 mb-1">Numéro de téléphone</label>
-      <input type="tel" name="phone_number" required placeholder="221771234567"
-             class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-orange-500 focus:border-transparent">
-    </div>
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label class="label">Prénom</label>
+          <input type="text" name="first_name" required class="input">
+        </div>
+        <div>
+          <label class="label">Nom</label>
+          <input type="text" name="last_name" required class="input">
+        </div>
+      </div>
 
-    <div>
-      <label class="block text-sm font-medium text-gray-700 mb-1">Mot de passe (min 6 car.)</label>
-      <input type="password" name="password" required minlength="6"
-             class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-orange-500 focus:border-transparent">
-    </div>
-
-    <div>
-      <label class="block text-sm font-medium text-gray-700 mb-1">Adresse</label>
-      <textarea name="address" rows="2" required
-                class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-orange-500 focus:border-transparent"></textarea>
-    </div>
-
-    <div class="grid grid-cols-2 gap-4">
       <div>
-        <label class="block text-sm font-medium text-gray-700 mb-1">Latitude</label>
-        <input type="number" step="any" name="latitude" id="latitude"
-               class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-orange-500">
+        <label class="label">Numéro de téléphone</label>
+        <input type="tel" name="phone_number" required placeholder="221771234567" class="input">
       </div>
+
       <div>
-        <label class="block text-sm font-medium text-gray-700 mb-1">Longitude</label>
-        <input type="number" step="any" name="longitude" id="longitude"
-               class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-orange-500">
+        <label class="label">Mot de passe (min 6 car.)</label>
+        <input type="password" name="password" required minlength="6" class="input">
       </div>
-    </div>
 
-    <div>
-      <label class="block text-sm font-medium text-gray-700 mb-1">Je suis</label>
-      <select name="role" required
-              class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-orange-500">
-        <option value="client">Client — Je veux commander</option>
-        <option value="cook">Cuisinier — Je veux vendre mes plats</option>
-        <option value="delivery_driver">Livreur — Je veux livrer</option>
-      </select>
-    </div>
+      <div>
+        <label class="label">Quartier</label>
+        <input type="text" name="address" id="address" list="districts" required autocomplete="off"
+               placeholder="Rechercher un quartier..." class="input">
+        <datalist id="districts"></datalist>
+        <p class="text-xs text-gray-500 mt-1">Tapez pour rechercher un quartier de Dakar</p>
+      </div>
 
-    <button type="submit" class="w-full bg-orange-600 text-white py-2 rounded-lg hover:bg-orange-700 font-medium">
-      <i class="fas fa-user-plus"></i> Créer mon compte
-    </button>
-  </form>
+      <script>
+        const districts = [
+          "Plateau","Médina","Gorée","Fass","Colobane","Gueule Tapée","Fann",
+          "Point E","Amitié","Mermoz","Sacré-Cœur","Liberté","Baobab",
+          "Sicap Karack","Cité Keur Gorgui","HLM","Dieuppeul","Derklé",
+          "Grand Dakar","Biscuiterie","Patte d'Oie","Nord Foire","Ouest Foire",
+          "Almadies","Ngor","Île de Ngor","Ouakam","Yoff","Mamelles","Virage",
+          "Grand Yoff","Parcelles Assainies","Cambérène","Hann Bel-Air","Grand Médine",
+          "Cité Mixta","Sicap Liberté","Soprim","Liberté 1","Liberté 2","Liberté 3",
+          "Liberté 4","Liberté 5","Liberté 6","Sacré-Cœur 1","Sacré-Cœur 2","Sacré-Cœur 3",
+          "Amitié 1","Amitié 2","Amitié 3",
+        ];
 
-  <p class="text-center mt-4 text-sm text-gray-600">
-    Déjà inscrit ? <a href="/login" class="text-orange-600 hover:underline">Se connecter</a>
-  </p>
+        const input = document.getElementById('address');
+        const datalist = document.getElementById('districts');
+
+        input.addEventListener('input', function() {
+          const val = this.value.toLowerCase();
+          datalist.innerHTML = '';
+          districts.forEach(d => {
+            if (d.toLowerCase().includes(val)) {
+              const opt = document.createElement('option');
+              opt.value = d;
+              datalist.appendChild(opt);
+            }
+          });
+        });
+      </script>
+
+      <button type="submit" class="btn btn-primary w-full">
+        <i class="fas fa-user-plus"></i> Créer mon compte
+      </button>
+    </form>
+  </div>
+
+  <div class="card-footer text-center">
+    <p class="text-gray-500 text-sm">
+      Déjà inscrit ? <a href="/login" class="text-primary hover:underline">Se connecter</a>
+    </p>
+  </div>
 </div>

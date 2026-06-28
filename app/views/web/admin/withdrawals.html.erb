@@ -1,42 +1,35 @@
 <div class="max-w-4xl mx-auto">
-  <a href="/admin" class="text-orange-600 hover:underline mb-4 inline-block"><i class="fas fa-arrow-left"></i> Retour à l'administration</a>
+  <a href="/admin" class="text-primary hover:underline mb-4 inline-block"><i class="fas fa-arrow-left"></i> Retour à l'administration</a>
 
-  <div class="bg-white rounded-xl shadow-md overflow-hidden">
-    <div class="bg-gradient-to-r from-orange-500 to-orange-700 p-6 text-white">
-      <h1 class="text-xl font-bold"><i class="fas fa-money-bill-wave"></i> Gestion des retraits</h1>
-      <p class="text-orange-100 text-sm"><%= @withdrawals.count %> demande(s) en attente</p>
+  <div class="card overflow-hidden">
+    <div class="bg-muted p-6">
+      <h1 class="heading-3"><i class="fas fa-money-bill-wave"></i> Gestion des retraits</h1>
+      <p class="opacity-80 text-sm"><%= @withdrawals.count %> demande(s) en attente</p>
     </div>
 
     <% if @withdrawals.any? %>
-      <div class="overflow-x-auto">
-        <table class="w-full text-sm">
+      <div class="table-container">
+        <table>
           <thead>
-            <tr class="bg-gray-100 text-left">
-              <th class="p-3">Date</th>
-              <th class="p-3">Livreur</th>
-              <th class="p-3">Téléphone</th>
-              <th class="p-3">Montant</th>
-              <th class="p-3">Solde actuel</th>
-              <th class="p-3">Actions</th>
-            </tr>
+            <tr><th>Date</th><th>Livreur</th><th>Téléphone</th><th>Montant</th><th>Solde actuel</th><th>Actions</th></tr>
           </thead>
           <tbody>
             <% @withdrawals.each do |w| %>
-              <tr class="border-b hover:bg-gray-50">
-                <td class="p-3"><%= l(w.created_at, format: :short) %></td>
-                <td class="p-3 font-medium"><%= w.user.full_name %></td>
-                <td class="p-3"><%= w.user.phone_number %></td>
-                <td class="p-3 font-bold text-orange-600"><%= number_to_currency(w.amount, unit: "CFA", format: "%n %u") %></td>
-                <td class="p-3"><%= number_to_currency(w.user.balance, unit: "CFA", format: "%n %u") %></td>
-                <td class="p-3">
+              <tr>
+                <td><%= l(w.created_at, format: :short) %></td>
+                <td class="font-medium"><%= w.user.full_name %></td>
+                <td><%= w.user.phone_number %></td>
+                <td class="font-bold text-primary"><%= number_to_currency(w.amount, unit: "CFA", format: "%n %u") %></td>
+                <td><%= number_to_currency(w.user.balance, unit: "CFA", format: "%n %u") %></td>
+                <td>
                   <% if w.user.balance >= w.amount %>
                     <a href="/admin/withdrawals/<%= w.id %>/validate"
-                       class="bg-green-600 text-white px-3 py-1.5 rounded text-xs hover:bg-green-700"
+                       class="btn btn-sm" style="background-color:#16a34a;color:white;border:none"
                        data-confirm="Valider le retrait de <%= number_to_currency(w.amount, unit: 'CFA', format: '%n %u') %> pour <%= w.user.full_name %> ?">
                       <i class="fas fa-check"></i> Valider
                     </a>
                   <% else %>
-                    <span class="text-xs text-red-600"><i class="fas fa-exclamation-triangle"></i> Solde insuffisant</span>
+                    <span class="text-destructive text-xs"><i class="fas fa-exclamation-triangle"></i> Solde insuffisant</span>
                   <% end %>
                 </td>
               </tr>
@@ -46,7 +39,7 @@
       </div>
     <% else %>
       <div class="text-center py-12">
-        <i class="fas fa-check-circle text-4xl text-green-300 mb-3"></i>
+        <i class="fas fa-check-circle text-4xl" style="color:#86efac"></i>
         <p class="text-gray-500">Aucune demande de retrait en attente</p>
       </div>
     <% end %>

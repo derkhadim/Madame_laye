@@ -22,8 +22,9 @@ module Api
           meals = base_meals.limit(10)
         end
 
-        results = meals.group_by(&:user).map do |cook, cook_meals|
-          {
+        results_map = {}
+        meals.group_by(&:user).each do |cook, cook_meals|
+          results_map[cook.id] = {
             cook: {
               id: cook.id, first_name: cook.first_name, last_name: cook.last_name,
               address: cook.address, latitude: cook.latitude, longitude: cook.longitude, avatar: cook.avatar
@@ -33,11 +34,49 @@ module Api
                 id: m.id, name: m.name, description: m.description, price: m.price.to_f,
                 meal_type: m.meal_type, average_rating: m.average_rating, reviews_count: m.reviews.count
               }
-            }
+            },
+            products: []
           }
         end
 
-        render_success(results)
+        if keyword.present?
+          terms = keyword.split(/\s+/).map { |t| ActiveRecord::Base.sanitize_sql_like(t) }
+          product_conditions = terms.map { |t| "(LOWER(name) LIKE ? OR LOWER(description) LIKE ?)" }.join(" OR ")
+          product_bindings = terms.flat_map { |t| ["%#{t}%", "%#{t}%"] }
+
+          matching_products = DailyProduct.for_date(Date.current).available
+            .where(product_conditions, *product_bindings)
+            .order(created_at: :desc)
+        else
+          matching_products = DailyProduct.none
+        end
+
+        matching_products.group_by(&:user).each do |cook, prods|
+          if results_map[cook.id]
+            results_map[cook.id][:products] = prods.map { |p|
+              {
+                id: p.id, name: p.name, description: p.description, price: p.price.to_f,
+                category: p.category, quantity_available: p.quantity_available
+              }
+            }
+          else
+            results_map[cook.id] = {
+              cook: {
+                id: cook.id, first_name: cook.first_name, last_name: cook.last_name,
+                address: cook.address, latitude: cook.latitude, longitude: cook.longitude, avatar: cook.avatar
+              },
+              menus: [],
+              products: prods.map { |p|
+                {
+                  id: p.id, name: p.name, description: p.description, price: p.price.to_f,
+                  category: p.category, quantity_available: p.quantity_available
+                }
+              }
+            }
+          end
+        end
+
+        render_success(results_map.values)
       end
     end
   end

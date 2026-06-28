@@ -35,5 +35,9 @@ module MadameLayeApi
     config.middleware.use ActionDispatch::Flash
 
     config.api_only = false
+
+    # Enable asset pipeline for Tailwind CSS
+    config.assets.enabled = true
+    config.assets.paths << Rails.root.join("app", "assets", "tailwind")
   end
 end

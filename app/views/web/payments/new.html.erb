@@ -1,55 +1,58 @@
-<div class="max-w-md mx-auto bg-white rounded-xl shadow-md p-8">
-  <h1 class="text-2xl font-bold mb-6"><i class="fas fa-credit-card text-orange-600"></i> Paiement</h1>
-
-  <div class="mb-4 p-4 bg-gray-50 rounded-lg">
-    <p class="text-sm text-gray-500">Commande #<%= @order.id %></p>
-    <p class="text-2xl font-bold text-orange-600"><%= number_to_currency(@order.total_amount, unit: "CFA", format: "%n %u") %></p>
+<div class="max-w-md mx-auto card p-6 md:p-8">
+  <div class="card-header">
+    <h1 class="heading-2"><i class="fas fa-credit-card text-primary"></i> Paiement</h1>
   </div>
+  <div class="card-body">
+    <div class="bg-muted p-4 rounded-lg mb-4">
+      <p class="text-gray-500 text-sm">Commande #<%= @order.id %></p>
+      <p class="heading-2 text-primary"><%= number_to_currency(@order.total_amount, unit: "CFA", format: "%n %u") %></p>
+    </div>
 
-  <form action="/orders/<%= @order.id %>/payments" method="post" class="space-y-4">
-    <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+    <form action="/orders/<%= @order.id %>/payments" method="post" class="space-y-4">
+      <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
 
-    <div>
-      <label class="block text-sm font-medium text-gray-700 mb-2">Mode de paiement</label>
-      <div class="grid grid-cols-2 gap-3">
-        <label class="border rounded-lg p-3 cursor-pointer hover:bg-orange-50 has-[:checked]:border-orange-600 has-[:checked]:bg-orange-50">
-          <input type="radio" name="payment_method" value="wave" class="sr-only">
-          <div class="text-center">
-            <div class="text-2xl mb-1">🌊</div>
-            <span class="text-sm font-medium">Wave</span>
-          </div>
-        </label>
-        <label class="border rounded-lg p-3 cursor-pointer hover:bg-orange-50 has-[:checked]:border-orange-600 has-[:checked]:bg-orange-50">
-          <input type="radio" name="payment_method" value="orange_money" class="sr-only">
-          <div class="text-center">
-            <div class="text-2xl mb-1">🍊</div>
-            <span class="text-sm font-medium">Orange Money</span>
-          </div>
-        </label>
-        <label class="border rounded-lg p-3 cursor-pointer hover:bg-orange-50 has-[:checked]:border-orange-600 has-[:checked]:bg-orange-50">
-          <input type="radio" name="payment_method" value="visa" class="sr-only">
-          <div class="text-center">
-            <div class="text-2xl mb-1">💳</div>
-            <span class="text-sm font-medium">Visa</span>
-          </div>
-        </label>
-        <label class="border rounded-lg p-3 cursor-pointer hover:bg-orange-50 has-[:checked]:border-orange-600 has-[:checked]:bg-orange-50">
-          <input type="radio" name="payment_method" value="mastercard" class="sr-only">
-          <div class="text-center">
-            <div class="text-2xl mb-1">💳</div>
-            <span class="text-sm font-medium">Mastercard</span>
-          </div>
-        </label>
+      <div>
+        <label class="label mb-2">Mode de paiement</label>
+        <div class="grid grid-cols-2 gap-3">
+          <label class="border rounded-lg p-3 cursor-pointer hover:bg-primary/5 has-[:checked]:border-primary has-[:checked]:bg-primary/5">
+            <input type="radio" name="payment_method" value="wave" class="sr-only">
+            <div class="text-center">
+              <div class="text-2xl mb-1">🌊</div>
+              <span class="text-sm font-medium">Wave</span>
+            </div>
+          </label>
+          <label class="border rounded-lg p-3 cursor-pointer hover:bg-primary/5 has-[:checked]:border-primary has-[:checked]:bg-primary/5">
+            <input type="radio" name="payment_method" value="orange_money" class="sr-only">
+            <div class="text-center">
+              <div class="text-2xl mb-1">🍊</div>
+              <span class="text-sm font-medium">Orange Money</span>
+            </div>
+          </label>
+          <label class="border rounded-lg p-3 cursor-pointer hover:bg-primary/5 has-[:checked]:border-primary has-[:checked]:bg-primary/5">
+            <input type="radio" name="payment_method" value="visa" class="sr-only">
+            <div class="text-center">
+              <div class="text-2xl mb-1">💳</div>
+              <span class="text-sm font-medium">Visa</span>
+            </div>
+          </label>
+          <label class="border rounded-lg p-3 cursor-pointer hover:bg-primary/5 has-[:checked]:border-primary has-[:checked]:bg-primary/5">
+            <input type="radio" name="payment_method" value="mastercard" class="sr-only">
+            <div class="text-center">
+              <div class="text-2xl mb-1">💳</div>
+              <span class="text-sm font-medium">Mastercard</span>
+            </div>
+          </label>
+        </div>
       </div>
-    </div>
 
-    <div>
-      <label class="block text-sm font-medium text-gray-700 mb-1">Numéro de téléphone (Wave/Orange)</label>
-      <input type="tel" name="phone_number" placeholder="221XXXXXXXXX" class="w-full border rounded-lg px-3 py-2">
-    </div>
+      <div>
+        <label class="label">Numéro de téléphone (Wave/Orange)</label>
+        <input type="tel" name="phone_number" placeholder="221XXXXXXXXX" class="input">
+      </div>
 
-    <button type="submit" class="w-full bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 font-medium">
-      <i class="fas fa-check-circle"></i> Payer <%= number_to_currency(@order.total_amount, unit: "CFA", format: "%n %u") %>
-    </button>
-  </form>
+      <button type="submit" class="btn w-full" style="background-color:#16a34a;color:white;border:none">
+        <i class="fas fa-check-circle"></i> Payer <%= number_to_currency(@order.total_amount, unit: "CFA", format: "%n %u") %>
+      </button>
+    </form>
+  </div>
 </div>
