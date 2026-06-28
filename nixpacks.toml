@@ -1,0 +1,15 @@
+[phases.setup]
+nixPkgs = ["nodejs", "libyaml"]
+
+[phases.build]
+cmds = [
+  "bundle install",
+  "bundle exec bootsnap precompile --gemfile",
+  "bundle exec rails tailwindcss:build",
+]
+
+[phases.deploy]
+cmds = [
+  "bin/rails db:prepare",
+  "bin/rails server -p $PORT -b 0.0.0.0",
+]
