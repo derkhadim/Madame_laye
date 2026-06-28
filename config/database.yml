@@ -88,8 +88,9 @@ production:
   adapter: postgresql
   encoding: unicode
   max_connections: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  url: <%= ENV["DATABASE_URL"] %>
   database: <%= ENV["PGDATABASE"] || "madame_laye_api_production" %>
-  username: <%= ENV["PGUSER"] || "madame_laye_api" %>
+  username: <%= ENV["PGUSER"] %>
   password: <%= ENV["PGPASSWORD"] %>
-  host: <%= ENV["PGHOST"] || "localhost" %>
+  host: <%= ENV["PGHOST"] %>
   port: <%= ENV["PGPORT"] || 5432 %>
