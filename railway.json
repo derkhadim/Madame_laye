@@ -1,13 +1,24 @@
+// {
+//   "$schema": "https://railway.app/railway.schema.json",
+//   "build": {
+//     "builder": "nixpacks",
+//     "buildCommand": "bundle exec rails tailwindcss:build"
+//   },
+//   "deploy": {
+//     "startCommand": "bin/rails db:prepare && bin/rails server -p $PORT -b 0.0.0.0",
+//     "healthcheckPath": "/up",
+//     "restartPolicyType": "always",
+//     "watchPatterns": ["**/*"]
+//   }
+// }
 {
-  "$schema": "https://railway.app/railway.schema.json",
   "build": {
-    "builder": "nixpacks",
-    "buildCommand": "bundle exec rails tailwindcss:build"
+    "command": "bundle install && yarn install && SECRET_KEY_BASE_DUMMY=1 bundle exec rails assets:precompile --trace"
   },
   "deploy": {
-    "startCommand": "bin/rails db:prepare && bin/rails server -p $PORT -b 0.0.0.0",
-    "healthcheckPath": "/up",
-    "restartPolicyType": "always",
-    "watchPatterns": ["**/*"]
+    "startCommand": "bundle exec puma -C config/puma.rb",
+    "preDeployCommand": "bundle exec rails db:prepare",
+    "healthcheckPath": "/",
+    "healthcheckTimeout": 120
   }
 }
